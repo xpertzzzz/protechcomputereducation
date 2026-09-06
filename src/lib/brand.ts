@@ -148,3 +148,9 @@ export function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+export function telHref(number: string | null | undefined): string {
+  const digits = (number ?? "").replace(/[^\d]/g, "");
+  if (!digits) return "tel:";
+  return `tel:+${digits.length === 10 ? `91${digits}` : digits}`;
+}
