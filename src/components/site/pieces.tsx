@@ -86,30 +86,93 @@ export function EmptyState({
   );
 }
 
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
 export function PageHero({
   eyebrow,
   title,
   lead,
+  breadcrumbs,
+  bgImages,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   lead?: string;
+  breadcrumbs?: { label: string; path?: string }[];
+  bgImages?: string[];
   children?: ReactNode;
 }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!bgImages || bgImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % bgImages.length);
+    }, 1500); // 1.5 seconds is slightly less aggressive than 1s, but feels like 1s
+    return () => clearInterval(interval);
+  }, [bgImages]);
+
   return (
-    <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface/50 to-background">
-      <div className="pointer-events-none absolute inset-0 grid-field opacity-40" aria-hidden />
-      <div className="shell relative py-8 sm:py-10 lg:py-12">
-        <Reveal>
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground shadow-sm">
+    <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface/50 to-background pt-10 pb-16">
+      {/* Background Images Layer */}
+      {bgImages && bgImages.length > 0 && (
+        <div className="absolute inset-0 z-0 opacity-20">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImageIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url("${bgImages[currentImageIndex]}")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+              }}
+            />
+          </AnimatePresence>
+        </div>
+      )}
+      
+      {!bgImages && (
+        <div className="pointer-events-none absolute inset-0 grid-field opacity-40" aria-hidden />
+      )}
+      <div className="absolute inset-0 z-0 bg-background/80 backdrop-blur-sm" />
+      
+      <div className="shell relative z-10 flex flex-col items-center text-center">
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+            {breadcrumbs.map((crumb, idx) => (
+              <span key={idx} className="flex items-center gap-2">
+                {idx > 0 && <span>›</span>}
+                {crumb.path ? (
+                  <Link to={crumb.path} className="hover:text-foreground transition-colors">
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-foreground">{crumb.label}</span>
+                )}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {eyebrow && !breadcrumbs && (
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground shadow-sm">
             {eyebrow}
           </span>
-          <h1 className="mt-5 max-w-4xl font-display text-3xl leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
+        )}
+
+        <Reveal>
+          <h1 className="max-w-4xl font-display text-4xl leading-[1.04] tracking-tight sm:text-5xl lg:text-7xl">
             {title}
           </h1>
           {lead && (
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               {lead}
             </p>
           )}

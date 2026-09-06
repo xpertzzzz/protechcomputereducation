@@ -76,16 +76,6 @@ function LoginPage() {
                   <p className="text-xs text-white/70 mt-0.5">Manage courses & curriculum</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-4 rounded-xl bg-white/10 p-4 backdrop-blur-md border border-white/10 transition-colors hover:bg-white/20">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/20">
-                  <Award className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold">Certificate Generation</h3>
-                  <p className="text-xs text-white/70 mt-0.5">Issue & verify certificates</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

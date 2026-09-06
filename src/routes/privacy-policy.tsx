@@ -24,7 +24,16 @@ function PrivacyPolicy() {
   const s = FALLBACK_SETTINGS;
   return (
     <SiteShell>
-      <PageHero eyebrow="Legal" title="Privacy Policy" lead="How we handle the information you share with the institute." />
+      <PageHero
+        title="Privacy Policy"
+        lead="How we handle the information you share with the institute."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Privacy Policy' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1505664159814-fb5e47895e68?q=80&w=2070&auto=format&fit=crop"
+        ]}
+      />
       <Prose>
         <h2>Information we collect</h2>
         <p>

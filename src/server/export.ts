@@ -3,11 +3,11 @@ import { db } from "@/db";
 import { students, payments, courses } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import * as xlsx from "xlsx";
-import { getSessionFn } from "@/server/auth-functions";
+import { checkAuthFn } from "@/server/functions";
 
 export const exportStudentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const session = await getSessionFn();
-  if (!session || session.role !== 'admin') {
+  const { isAuthenticated } = await checkAuthFn();
+  if (!isAuthenticated) {
     throw new Error("Unauthorized");
   }
 
@@ -33,8 +33,8 @@ export const exportStudentsFn = createServerFn({ method: "GET" }).handler(async 
 });
 
 export const exportPaymentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const session = await getSessionFn();
-  if (!session || session.role !== 'admin') {
+  const { isAuthenticated } = await checkAuthFn();
+  if (!isAuthenticated) {
     throw new Error("Unauthorized");
   }
 

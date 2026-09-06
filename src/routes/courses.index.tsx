@@ -86,35 +86,16 @@ function CoursesPage() {
 
   return (
     <SiteShell>
-      {/* Custom Image Hero with Breadcrumb */}
-      <div className="relative pt-10 pb-16 border-b border-border">
-        <div 
-          className="absolute inset-0 z-0 opacity-20"
-          style={{ 
-            backgroundImage: 'url("https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-        {/* Light theme overlay */}
-        <div className="absolute inset-0 z-0 bg-background/80 backdrop-blur-sm" />
-        
-        <div className="shell relative z-10 flex flex-col items-center text-center">
-          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-medium text-muted-foreground shadow-sm">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <span>›</span>
-            <span className="text-foreground">Courses</span>
-          </div>
-          
-          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-7xl">
-            Our Courses
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Structured programmes across website designing, website development, programming excellence and AI. Filter to find where you belong.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title="Our Courses"
+        lead="Structured programmes across website designing, website development, programming excellence and AI. Filter to find where you belong."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Courses' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+        ]}
+      />
 
       <section className="shell pt-16 pb-8 border-b border-border/50">
         <div className="mb-8">

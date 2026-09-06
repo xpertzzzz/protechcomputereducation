@@ -43,9 +43,14 @@ function ContactPage() {
   return (
     <SiteShell>
       <PageHero
-        eyebrow="Contact"
-        title="Talk to the institute."
-        lead="Send an enquiry and it is saved with us before WhatsApp opens."
+        title="Contact Us"
+        lead="Visit the institute, call us, or send an enquiry below. We look forward to discussing how we can help with your education."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Contact' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=2071&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069&auto=format&fit=crop"
+        ]}
       />
 
       <section className="shell grid gap-12 py-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">

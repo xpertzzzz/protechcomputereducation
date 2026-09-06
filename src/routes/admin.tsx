@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, Outlet, Link, useRouter } from "@tanstack/react-router";
-import { getSessionFn, logoutFn } from "@/server/auth-functions";
+import { checkAuthFn, logoutFn } from "@/server/functions";
 import { 
   LayoutDashboard, 
   Users, 
@@ -15,11 +15,12 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: async () => {
-    const session = await getSessionFn();
-    if (!session) {
+    const { isAuthenticated } = await checkAuthFn();
+    if (!isAuthenticated) {
       throw redirect({ to: "/login" });
     }
-    return { session };
+    // Mock session for now
+    return { session: { email: "admin", role: "Administrator" } };
   },
   component: AdminLayout,
 });

@@ -52,9 +52,14 @@ function AboutPage() {
   return (
     <SiteShell>
       <PageHero
-        eyebrow="About the institute"
-        title="A place to learn technology properly."
-        lead="Protech Computer Education is a computer training institute at Bolgarh Bus Stand, Khordha, teaching programming and web technologies to students who want practical, working skills."
+        title="About Protech"
+        lead="A dedicated computer education institute based in Bolgarh, Khordha, driven by the belief that high-quality technology education should be accessible locally."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'About Us' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop"
+        ]}
       />
 
       <div className="shell pb-10">

@@ -73,43 +73,25 @@ function GalleryPage() {
 
   return (
     <SiteShell>
-      {/* Custom Image Hero */}
-      <div className="relative pt-10 pb-16 border-b border-border">
-        <div 
-          className="absolute inset-0 z-0 opacity-20"
-          style={{ 
-            backgroundImage: 'url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-        <div className="absolute inset-0 z-0 bg-background/80 backdrop-blur-sm" />
-        
-        <div className="shell relative z-10 flex flex-col items-center text-center">
-          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-medium text-muted-foreground shadow-sm">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <span>›</span>
-            <span className="text-foreground">Gallery</span>
-          </div>
-          
-          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-7xl">
-            Gallery
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Moments from our campus, classrooms, student work, and institute events.
-          </p>
-          
-          <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-5 py-2 text-xs font-medium shadow-sm">
-            <span className="text-teal font-bold">✓</span>
-            Verified
-            <span className="text-muted-foreground mx-1">|</span>
-            Government Recognized
-            <span className="text-muted-foreground mx-1">|</span>
-            ISO Certified
-          </div>
+      <PageHero
+        title="Gallery"
+        lead="Moments from our campus, classrooms, student work, and institute events."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Gallery' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop"
+        ]}
+      >
+        <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-5 py-2 text-xs font-medium shadow-sm">
+          <span className="text-teal font-bold">✓</span>
+          Verified
+          <span className="text-muted-foreground mx-1">|</span>
+          Government Recognized
+          <span className="text-muted-foreground mx-1">|</span>
+          ISO Certified
         </div>
-      </div>
+      </PageHero>
 
       <section className="shell py-14">
         {categories.length > 1 && (

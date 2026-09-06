@@ -29,9 +29,14 @@ function TestimonialsPage() {
   return (
     <SiteShell>
       <PageHero
-        eyebrow="Testimonials"
-        title="Student experiences, in their own words."
-        lead="Every testimonial on this page is published by the institute from a real student. Nothing here is written on their behalf."
+        title="Student Experiences"
+        lead="Read directly from students who have studied here. None of these words are written on their behalf."
+        breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Testimonials' }]}
+        bgImages={[
+          "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=2070&auto=format&fit=crop"
+        ]}
       />
 
       <section className="shell py-12">
