@@ -1,13 +1,12 @@
-import { createServerFn } from "@tanstack/react-start";
 import { db } from "@/db";
 import { students, payments, courses } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import * as xlsx from "xlsx";
-import { checkAuthFn } from "@/server/functions";
+import { getSessionFn } from "./auth-functions";
 
-export const exportStudentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const { isAuthenticated } = await checkAuthFn();
-  if (!isAuthenticated) {
+export const exportStudentsFn = async (req: any, res: any) => {
+  const session = await getSessionFn(req);
+  if (!session) {
     throw new Error("Unauthorized");
   }
 
@@ -27,14 +26,12 @@ export const exportStudentsFn = createServerFn({ method: "GET" }).handler(async 
   const workbook = xlsx.utils.book_new();
   xlsx.utils.book_append_sheet(workbook, worksheet, "Students");
 
-  // Output as base64
-  const base64 = xlsx.write(workbook, { type: "base64", bookType: "xlsx" });
-  return base64;
-});
+  return xlsx.write(workbook, { type: "base64", bookType: "xlsx" });
+};
 
-export const exportPaymentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const { isAuthenticated } = await checkAuthFn();
-  if (!isAuthenticated) {
+export const exportPaymentsFn = async (req: any, res: any) => {
+  const session = await getSessionFn(req);
+  if (!session) {
     throw new Error("Unauthorized");
   }
 
@@ -68,6 +65,5 @@ export const exportPaymentsFn = createServerFn({ method: "GET" }).handler(async 
   const workbook = xlsx.utils.book_new();
   xlsx.utils.book_append_sheet(workbook, worksheet, "Payments");
 
-  const base64 = xlsx.write(workbook, { type: "base64", bookType: "xlsx" });
-  return base64;
-});
+  return xlsx.write(workbook, { type: "base64", bookType: "xlsx" });
+};

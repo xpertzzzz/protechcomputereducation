@@ -1,21 +1,20 @@
-import { createServerFn } from "@tanstack/react-start";
 import { db } from "@/db/index";
 import { students, courses, enquiries, payments, galleryItems, testimonials } from "@/db/schema";
 import { eq, desc, count, sql } from "drizzle-orm";
 
-export const getAdminCoursesFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getAdminCoursesFn = async () => {
   return await db.select().from(courses).orderBy(desc(courses.createdAt));
-});
+};
 
-export const getEnquiriesFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getEnquiriesFn = async () => {
   return await db.select().from(enquiries).orderBy(desc(enquiries.createdAt));
-});
+};
 
-export const getAdminGalleryFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getAdminGalleryFn = async () => {
   return await db.select().from(galleryItems).orderBy(desc(galleryItems.createdAt));
-});
+};
 
-export const getDashboardStatsFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getDashboardStatsFn = async () => {
   const [
     studentsCount,
     coursesCount,
@@ -34,9 +33,9 @@ export const getDashboardStatsFn = createServerFn({ method: "GET" }).handler(asy
     newEnquiries: Number(enquiriesCount[0]?.count ?? 0),
     totalRevenue: Number(revenueData[0]?.sum ?? 0),
   };
-});
+};
 
-export const getPaymentsFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getPaymentsFn = async () => {
   return await db.select({
     id: payments.id,
     amount: payments.amount,
@@ -50,12 +49,12 @@ export const getPaymentsFn = createServerFn({ method: "GET" }).handler(async () 
   .leftJoin(students, eq(payments.studentId, students.id))
   .leftJoin(courses, eq(payments.courseId, courses.id))
   .orderBy(desc(payments.paymentDate));
-});
+};
 
-export const getStudentsFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getStudentsFn = async () => {
   return await db.select().from(students).orderBy(desc(students.createdAt));
-});
+};
 
-export const getAdminTestimonialsFn = createServerFn({ method: "GET" }).handler(async () => {
+export const getAdminTestimonialsFn = async () => {
   return await db.select().from(testimonials).orderBy(desc(testimonials.createdAt));
-});
+};
