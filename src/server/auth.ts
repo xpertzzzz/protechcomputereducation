@@ -1,12 +1,13 @@
 import { SignJWT, jwtVerify } from "jose";
 import { setCookie, getCookie, deleteCookie } from "@tanstack/react-start/server";
+import bcrypt from "bcryptjs";
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET_KEY || "super-secret-protech-admin-key-for-dev"
+  process.env["JWT_SECRET_KEY"] || "super-secret-protech-admin-key-for-dev"
 );
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const ADMIN_USERNAME = process.env["ADMIN_USERNAME"] || "admin";
+const ADMIN_PASSWORD = process.env["ADMIN_PASSWORD"] || "admin123";
 
 // Simple unhashed check for this prototype, but normally you'd use bcrypt to compare against a DB hash
 export function verifyCredentials(username: unknown, password: unknown) {
@@ -22,7 +23,7 @@ export async function createAdminSession() {
 
   setCookie("admin_token", jwt, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env["NODE_ENV"] === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24, // 24 hours
@@ -35,7 +36,7 @@ export async function verifyAdminSession(): Promise<boolean> {
 
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload.role === "admin";
+    return payload["role"] === "admin";
   } catch (error) {
     return false;
   }
@@ -43,4 +44,25 @@ export async function verifyAdminSession(): Promise<boolean> {
 
 export function clearAdminSession() {
   deleteCookie("admin_token", { path: "/" });
+}
+
+export async function verifyPassword(passwordPlain: string, passwordHash: string) {
+  return bcrypt.compare(passwordPlain, passwordHash);
+}
+
+export async function createToken(payload: any) {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("24h")
+    .sign(JWT_SECRET);
+}
+
+export async function verifyToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    return payload;
+  } catch (error) {
+    return null;
+  }
 }
