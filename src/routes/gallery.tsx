@@ -24,16 +24,28 @@ export const Route = createFileRoute("/gallery")({
   component: GalleryPage,
 });
 
+const LOCAL_IMAGES = [
+  { id: 'l1', image_url: '/images/1.jpeg', category: 'Classroom', title: 'Computer Lab' },
+  { id: 'l2', image_url: '/images/2.jpeg', category: 'Events', title: 'Certificate Distribution' },
+  { id: 'l3', image_url: '/images/3.jpeg', category: 'Events', title: 'Group Photo' },
+  { id: 'l4', image_url: '/images/4.jpeg', category: 'Classroom', title: 'Practical Session' },
+  { id: 'l5', image_url: '/images/5.jpeg', category: 'Campus', title: 'Institute Entrance' },
+  { id: 'l6', image_url: '/images/6.png', category: 'Others', title: 'Student Work' },
+  { id: 'l7', image_url: '/images/7.jpeg', category: 'Campus', title: 'Campus View' },
+];
+
 function GalleryPage() {
-  const { data: images = [], isLoading, isError } = usePublicGallery();
+  const { data: dbImages = [], isLoading, isError } = usePublicGallery();
   const [category, setCategory] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
+  const sourceImages = dbImages.length > 0 ? dbImages : LOCAL_IMAGES;
+
   const categories = useMemo(
-    () => Array.from(new Set(images.map((i) => i.category))).sort(),
-    [images],
+    () => Array.from(new Set(sourceImages.map((i) => i.category))).filter(Boolean).sort(),
+    [sourceImages],
   );
-  const shown = category ? images.filter((i) => i.category === category) : images;
+  const shown = category ? sourceImages.filter((i) => i.category === category) : sourceImages;
 
   const close = useCallback(() => setLightbox(null), []);
   const step = useCallback(
@@ -116,9 +128,9 @@ function GalleryPage() {
             </button>
             {categories.map((c) => (
               <button
-                key={c}
+                key={c as string}
                 type="button"
-                onClick={() => setCategory(c)}
+                onClick={() => setCategory(c as string)}
                 className={cn(
                   "rounded-full px-6 py-2.5 text-sm font-semibold transition-all shadow-sm border",
                   category === c
@@ -126,7 +138,7 @@ function GalleryPage() {
                     : "border-border bg-card text-foreground hover:border-cobalt/30 hover:text-cobalt",
                 )}
               >
-                {c}
+                {c as string}
               </button>
             ))}
           </div>
@@ -138,13 +150,12 @@ function GalleryPage() {
               title="We couldn't load the gallery"
               body="Please refresh the page. If it keeps happening, contact the institute on 7008414704."
             />
-          ) : isLoading ? (
-            <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+          ) : isLoading && dbImages.length === 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <div
                   key={i}
-                  className="mb-6 animate-pulse rounded-3xl bg-surface-2"
-                  style={{ height: 180 + (i % 3) * 70 }}
+                  className="mb-6 animate-pulse rounded-3xl bg-surface-2 aspect-[4/3]"
                 />
               ))}
             </div>
@@ -154,7 +165,7 @@ function GalleryPage() {
               body="Photographs uploaded by the institute will appear here. Nothing on this page is stock imagery."
             />
           ) : (
-            <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {shown.map((img, i) => (
                 <motion.button
                   key={img.id}
@@ -164,19 +175,21 @@ function GalleryPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.6, delay: (i % 6) * 0.05 }}
-                  className="group mb-6 block w-full break-inside-avoid overflow-hidden rounded-3xl border border-border/50 bg-card shadow-sm text-left transition-all hover:shadow-md hover:border-cobalt/30"
+                  className="group relative block w-full overflow-hidden rounded-3xl border border-border/50 bg-card shadow-sm text-left transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] hover:border-cobalt/40 hover:-translate-y-1 aspect-[4/3]"
                   aria-label={`Open ${img.title ?? "gallery image"}`}
                 >
                   <img
                     src={img.image_url}
                     alt={img.title ?? "Protech Computer Education"}
                     loading="lazy"
-                    className="w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
                   {(img.title || img.category) && (
-                    <div className="flex flex-col gap-1 bg-background/95 px-5 py-4 border-t border-border/50 backdrop-blur-sm">
+                    <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-1 bg-background/95 px-5 py-4 border-t border-border/50 backdrop-blur-sm translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                       <span className="font-semibold text-sm text-foreground">{img.title ?? "Untitled"}</span>
-                      <span className="text-[0.65rem] font-bold text-cobalt uppercase tracking-wider">{img.category}</span>
+                      {img.category && (
+                        <span className="text-[0.65rem] font-bold text-cobalt uppercase tracking-wider">{img.category}</span>
+                      )}
                     </div>
                   )}
                 </motion.button>

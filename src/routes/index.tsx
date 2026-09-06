@@ -482,28 +482,55 @@ function AISection() {
   );
 }
 
+const LOCAL_IMAGES = [
+  { id: 'l1', image_url: '/images/1.jpeg', category: 'Classroom', title: 'Computer Lab' },
+  { id: 'l2', image_url: '/images/2.jpeg', category: 'Events', title: 'Certificate Distribution' },
+  { id: 'l3', image_url: '/images/3.jpeg', category: 'Events', title: 'Group Photo' },
+  { id: 'l4', image_url: '/images/4.jpeg', category: 'Classroom', title: 'Practical Session' },
+  { id: 'l5', image_url: '/images/5.jpeg', category: 'Campus', title: 'Institute Entrance' },
+  { id: 'l6', image_url: '/images/6.png', category: 'Others', title: 'Student Work' },
+  { id: 'l7', image_url: '/images/7.jpeg', category: 'Campus', title: 'Campus View' },
+];
+
 function GalleryStrip() {
-  const { data: images = [] } = usePublicGallery();
+  const { data: dbImages = [] } = usePublicGallery();
+  
+  const images = dbImages.length > 0 ? dbImages : LOCAL_IMAGES;
   if (images.length === 0) return null;
+  
   return (
     <section className="shell py-12 sm:py-16">
       <SectionHead index="05" eyebrow="Gallery" title="Inside the institute." />
-      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {images.slice(0, 8).map((img, i) => (
           <Reveal key={img.id} delay={i * 0.05}>
-            <div className="group relative aspect-4/3 overflow-hidden bg-surface-2">
+            <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-border/50 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)]">
               <img
                 src={img.image_url}
                 alt={img.title ?? "Protech Computer Education"}
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
+              {(img.title || img.category) && (
+                <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-1 border-t border-border/50 bg-background/95 px-5 py-4 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 translate-y-full">
+                  <span className="text-sm font-semibold text-foreground">{img.title ?? "Untitled"}</span>
+                  {img.category && (
+                    <span className="text-[0.65rem] font-bold uppercase tracking-wider text-cobalt">{img.category}</span>
+                  )}
+                </div>
+              )}
             </div>
           </Reveal>
         ))}
       </div>
-      <div className="mt-10">
-        <ArrowLink to="/gallery">View the full gallery</ArrowLink>
+      <div className="mt-12 flex justify-center">
+        <Link
+          to="/gallery"
+          className="group inline-flex items-center gap-2 rounded-full border border-border bg-card px-8 py-3.5 text-sm font-semibold transition-all hover:border-cobalt hover:text-cobalt shadow-sm hover:shadow-md hover:-translate-y-0.5"
+        >
+          See full gallery
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
       </div>
     </section>
   );
@@ -610,7 +637,7 @@ function ClosingCTA() {
       <Reveal>
         <div className="grid gap-10 border-y border-border py-12 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <h2 className="max-w-2xl font-display text-3xl leading-[1.08] tracking-tight sm:text-5xl">
-            Start where you are. Leave with something you built.
+            Ready to build your career? Join Protech Computer Education today.
           </h2>
           <div className="flex flex-wrap gap-3 lg:justify-end">
             <Link
