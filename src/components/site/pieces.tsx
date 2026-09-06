@@ -98,16 +98,18 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div className="pointer-events-none absolute inset-0 grid-field opacity-50" aria-hidden />
-      <div className="shell relative pt-8 pb-16 sm:pt-12 sm:pb-24">
+    <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface/50 to-background">
+      <div className="pointer-events-none absolute inset-0 grid-field opacity-40" aria-hidden />
+      <div className="shell relative py-8 sm:py-10 lg:py-12">
         <Reveal>
-          <span className="eyebrow">{eyebrow}</span>
-          <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-muted-foreground shadow-sm">
+            {eyebrow}
+          </span>
+          <h1 className="mt-5 max-w-4xl font-display text-3xl leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
             {title}
           </h1>
           {lead && (
-            <p className="mt-7 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               {lead}
             </p>
           )}

@@ -116,6 +116,92 @@ function CoursesPage() {
         </div>
       </div>
 
+      <section className="shell pt-16 pb-8 border-b border-border/50">
+        <div className="mb-8">
+          <span className="eyebrow text-cobalt">Government Recognized Certification</span>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight">NIELIT O & A Level Courses</h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl text-sm leading-relaxed">
+            Standardized IT certification programs offered by the National Institute of Electronics and Information Technology, India. These courses open doors to esteemed government and private sector jobs.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* O-Level Card */}
+          <div className="group relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-surface to-background p-8 shadow-sm transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/40 hover:-translate-y-1">
+            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-teal to-cobalt origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 z-20" />
+            
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="font-display text-2xl font-bold text-foreground">O-Level Computer Course</h3>
+                <p className="mt-1 text-sm font-semibold text-teal uppercase tracking-wider">Foundation Level (Basic Diploma)</p>
+              </div>
+              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">
+                1 Year
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-4">
+              <div>
+                <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">What you'll learn</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">IT tools and networking, web designing, Python programming, and Internet of Things (IoT).</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">Career Roles</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">Web designer, UI designer, office automation assistant, data entry operator.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 pt-6 border-t border-border/50">
+              <Link 
+                to="/contact" 
+                search={{ course: 'o-level' }}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors"
+              >
+                Enquire for O-Level
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* A-Level Card */}
+          <div className="group relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-surface to-background p-8 shadow-sm transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/40 hover:-translate-y-1">
+            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-cobalt to-teal origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 z-20" />
+            
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="font-display text-2xl font-bold text-foreground">A-Level Computer Course</h3>
+                <p className="mt-1 text-sm font-semibold text-cobalt uppercase tracking-wider">Advanced Level (PGDCA Eq.)</p>
+              </div>
+              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">
+                1.5 - 2 Years
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-4">
+              <div>
+                <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">What you'll learn</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">Advanced programming, data structures, DBMS (SQL, NoSQL), server-side scripting, and web services.</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">Career Roles</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">Programmer, system analyst, IT specialist, freelance developer.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 pt-6 border-t border-border/50">
+              <Link 
+                to="/contact" 
+                search={{ course: 'a-level' }}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors"
+              >
+                Enquire for A-Level
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="shell py-14">
         <div className="space-y-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2">

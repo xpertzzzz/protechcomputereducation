@@ -64,6 +64,9 @@ function TestimonialsPage() {
             {items.map((t, i) => (
               <Reveal key={t.id} delay={(i % 6) * 0.08} className="h-full">
                 <div className="group relative flex h-full flex-col justify-between rounded-3xl bg-card p-8 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] border border-border/50 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/20">
+                  {/* Animated hover line */}
+                  <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-cobalt to-teal origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 z-20" />
+                  
                   {/* Watermark Quote */}
                   <div className="absolute top-4 right-6 text-border/40 font-serif text-8xl leading-none select-none pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-cobalt/10">
                     "
