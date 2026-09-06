@@ -8,13 +8,13 @@ import { COURSE_CATEGORIES, COURSE_LEVELS } from "@/lib/brand";
 import { usePublicCourses } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-type Search = { category?: string; level?: string; tech?: string };
+type Search = { category?: string | undefined; level?: string | undefined; tech?: string | undefined };
 
 export const Route = createFileRoute("/courses/")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    ...(typeof search.category === "string" ? { category: search.category } : {}),
-    ...(typeof search.level === "string" ? { level: search.level } : {}),
-    ...(typeof search.tech === "string" ? { tech: search.tech } : {}),
+    ...(typeof search["category"] === "string" ? { category: search["category"] as string } : {}),
+    ...(typeof search["level"] === "string" ? { level: search["level"] as string } : {}),
+    ...(typeof search["tech"] === "string" ? { tech: search["tech"] as string } : {}),
   }),
   head: () => ({
     meta: [
@@ -63,7 +63,7 @@ function Chip({
 
 function CoursesPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/courses" });
+  const navigate = useNavigate({ from: "/courses/" });
   const { data: courses = [], isLoading, isError } = usePublicCourses();
 
   const technologies = useMemo(() => {
@@ -80,7 +80,7 @@ function CoursesPage() {
   );
 
   const set = (patch: Search) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) as Search, replace: true });
+    navigate({ search: ((prev: Search) => ({ ...prev, ...patch })) as never, replace: true });
 
   const activeCount = [search.category, search.level, search.tech].filter(Boolean).length;
 
