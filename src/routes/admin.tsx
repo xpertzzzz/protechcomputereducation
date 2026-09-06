@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, Outlet, Link, useRouter } from "@tanstack/react-router";
-import { getSessionFn, logoutFn } from "@/lib/auth-server";
+import { getSessionFn, logoutFn } from "@/server/auth-functions";
 import { 
   LayoutDashboard, 
   Users, 

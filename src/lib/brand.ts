@@ -1,6 +1,4 @@
-import logoAsset from "@/assets/protech-logo.png.asset.json";
-
-export const LOGO_URL: string = logoAsset.url;
+export const LOGO_URL: string = "/logo.png";
 
 export const SITE_URL = "https://protech-computer-education.lovable.app";
 

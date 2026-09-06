@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { loginFn } from "@/lib/auth-server";
+import { loginFn } from "@/server/auth-functions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

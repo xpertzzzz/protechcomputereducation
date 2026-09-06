@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { students, payments, courses } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import * as xlsx from "xlsx";
-import { getSessionFn } from "./auth-server";
+import { getSessionFn } from "@/server/auth-functions";
 
 export const exportStudentsFn = createServerFn({ method: "GET" }).handler(async () => {
   const session = await getSessionFn();

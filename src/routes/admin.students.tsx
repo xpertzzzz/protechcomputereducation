@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getStudentsFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/lib/brand";
-import { exportStudentsFn } from "@/lib/export";
+import { exportStudentsFn } from "@/server/export";
 import { useState } from "react";
 import { Download } from "lucide-react";
 
