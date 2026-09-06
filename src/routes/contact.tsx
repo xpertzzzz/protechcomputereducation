@@ -9,9 +9,11 @@ import { useSettings } from "@/lib/data";
 
 export const Route = createFileRoute("/contact")({
   validateSearch: (search: Record<string, unknown>): { course?: string } => {
-    return {
-      course: typeof search.course === "string" ? search.course : undefined,
-    };
+    const params: { course?: string } = {};
+    if (typeof search['course'] === "string") {
+      params.course = search['course'];
+    }
+    return params;
   },
   head: () => ({
     meta: [
@@ -128,7 +130,11 @@ function ContactPage() {
             Fill this in and we'll save your enquiry, then open WhatsApp with your message ready to send.
           </p>
           <div className="mt-6">
-            <EnquiryForm initialCourse={search.course} />
+            {search.course ? (
+              <EnquiryForm initialCourse={search.course} />
+            ) : (
+              <EnquiryForm />
+            )}
           </div>
         </div>
       </section>

@@ -114,7 +114,6 @@ export const getPublicTestimonialsFn = createServerFn({ method: "GET" }).handler
     content: t.testimonial,
     given_on: t.createdAt.toISOString(),
     display_order: t.displayOrder,
-    featured: t.featured,
     is_published: t.active,
   }));
 });

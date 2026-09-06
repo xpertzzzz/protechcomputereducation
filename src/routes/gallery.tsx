@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -264,9 +264,9 @@ function GalleryPage() {
                   {lightbox! + 1} / {shown.length}
                 </span>
               </figcaption>
-              {active.description && (
+              {(active as any).description && (
                 <p className="mt-2 max-w-2xl text-xs text-primary-foreground/70">
-                  {active.description}
+                  {(active as any).description}
                 </p>
               )}
             </motion.figure>
