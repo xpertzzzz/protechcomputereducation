@@ -32,11 +32,10 @@ function Header() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-  return (
     <>
-      <header className="sticky top-0 z-50 flex flex-col w-full">
+      <header className="fixed inset-x-0 top-0 z-[100] flex flex-col pointer-events-none">
         {/* Top Contact Bar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-cobalt text-primary-foreground text-[0.7rem] font-semibold tracking-wide">
+        <div className="pointer-events-auto hidden lg:flex items-center justify-between px-6 py-2.5 bg-cobalt text-primary-foreground text-[0.7rem] font-semibold tracking-wide shadow-md">
           <div className="flex items-center gap-6">
             <a href={`tel:${settings.phone_primary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
               <Phone className="h-3 w-3" />
@@ -62,7 +61,7 @@ function Header() {
         </div>
 
         {/* Floating dock navbar */}
-        <div className="flex justify-center px-4 pt-4 pb-2 pointer-events-none transition-transform">
+        <div className="flex justify-center px-4 pt-4 pb-2 transition-transform">
           <motion.div
             initial={{ y: -80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -149,7 +148,7 @@ function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-4 top-[72px] z-40 overflow-hidden rounded-2xl border border-border bg-background/95 shadow-2xl backdrop-blur-2xl lg:hidden"
+            className="fixed inset-x-4 top-[88px] z-[90] overflow-hidden rounded-2xl border border-border bg-background/95 shadow-2xl backdrop-blur-2xl lg:hidden"
           >
             <div className="p-5">
               <ul className="divide-y divide-border">
@@ -210,7 +209,7 @@ function Footer() {
                 {settings.phone_primary}
               </a>
               {settings.phone_secondary && (
-                <a href={`tel:${settings.phone_secondary}`} className="link-underline w-fit">
+               <a href={`tel:${settings.phone_secondary}`} className="link-underline w-fit">
                   {settings.phone_secondary}
                 </a>
               )}
@@ -340,7 +339,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               animate: { opacity: 1 },
               transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
             })}
-        className="flex-1"
+        className="flex-1 pt-[88px] lg:pt-[116px]"
       >
         {children}
       </motion.main>
