@@ -32,114 +32,114 @@ function Header() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
+  return (
     <>
-      {/* Top Contact Bar */}
-      <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-cobalt text-primary-foreground text-[0.7rem] font-semibold tracking-wide z-40 relative">
-        <div className="flex items-center gap-6">
-          <a href={`tel:${settings.phone_primary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
-            <Phone className="h-3 w-3" />
-            {settings.phone_primary}
-          </a>
-          {settings.phone_secondary && (
-            <a href={`tel:${settings.phone_secondary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+      <header className="sticky top-0 z-50 flex flex-col w-full">
+        {/* Top Contact Bar */}
+        <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-cobalt text-primary-foreground text-[0.7rem] font-semibold tracking-wide">
+          <div className="flex items-center gap-6">
+            <a href={`tel:${settings.phone_primary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
               <Phone className="h-3 w-3" />
-              {settings.phone_secondary}
+              {settings.phone_primary}
             </a>
-          )}
-          <a href={whatsappLink(settings.whatsapp_number, "Hello")} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-[#25D366] hover:text-[#25D366]/80 transition-colors">
-            <span className="w-2 h-2 rounded-full bg-[#25D366]" />
-            WHATSAPP
-          </a>
+            {settings.phone_secondary && (
+              <a href={`tel:${settings.phone_secondary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                <Phone className="h-3 w-3" />
+                {settings.phone_secondary}
+              </a>
+            )}
+            <a href={whatsappLink(settings.whatsapp_number, "Hello")} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-[#25D366] hover:text-[#25D366]/80 transition-colors">
+              <span className="w-2 h-2 rounded-full bg-[#25D366]" />
+              WHATSAPP
+            </a>
+          </div>
+          <div className="flex items-center gap-6 uppercase">
+            <span>{settings.address_line}, {settings.city}, {settings.state} — {settings.pincode}</span>
+            <Link to="/login" className="flex items-center gap-1.5 border border-primary-foreground/30 px-3 py-1 rounded hover:bg-primary-foreground hover:text-cobalt transition-colors">
+              Login
+            </Link>
+          </div>
         </div>
-        <div className="flex items-center gap-6 uppercase">
-          <span>{settings.address_line}, {settings.city}, {settings.state} — {settings.pincode}</span>
-          <Link to="/login" className="flex items-center gap-1.5 border border-primary-foreground/30 px-3 py-1 rounded hover:bg-primary-foreground hover:text-cobalt transition-colors">
-            Login
-          </Link>
+
+        {/* Floating dock navbar */}
+        <div className="flex justify-center px-4 pt-4 pb-2 pointer-events-none transition-transform">
+          <motion.div
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className={cn(
+              "pointer-events-auto flex w-full max-w-5xl items-center gap-1 rounded-full border px-3 py-2 transition-all duration-500",
+              scrolled
+                ? "border-border/60 bg-background/95 shadow-[0_8px_32px_-8px_rgba(15,23,42,0.18)] backdrop-blur-3xl"
+                : "border-border/40 bg-background/80 shadow-[0_4px_24px_-6px_rgba(15,23,42,0.12)] backdrop-blur-xl",
+            )}
+          >
+            {/* Logo + full name */}
+            <Link
+              to="/"
+              className="group flex flex-1 items-center gap-2.5 rounded-full px-3 py-1.5 transition-colors hover:bg-surface lg:flex-none lg:mr-2"
+              aria-label="Protech Computer Education — home"
+            >
+              <img
+                src={LOGO_URL}
+                alt="Protech Computer Education"
+                width={120}
+                height={40}
+                className="h-7 w-auto flex-shrink-0"
+              />
+              <span className="font-display text-[0.82rem] font-semibold tracking-tight text-foreground">
+                Protech Computer Education
+              </span>
+            </Link>
+
+            {/* Divider */}
+            <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
+
+            {/* Nav links */}
+            <nav className="hidden items-center lg:flex" aria-label="Primary">
+              {NAV.map((item) => {
+                const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "relative rounded-full px-3.5 py-1.5 text-[0.8rem] font-medium tracking-wide transition-all duration-200",
+                      active
+                        ? "bg-foreground text-primary-foreground"
+                        : "text-muted-foreground hover:bg-surface hover:text-foreground",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Divider */}
+            <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
+
+            {/* CTA */}
+            <Link
+              to="/courses"
+              className="hidden rounded-full bg-teal px-4 py-1.5 text-[0.8rem] font-semibold text-white shadow-sm transition-all hover:brightness-110 lg:inline-flex"
+            >
+              Enroll Now
+            </Link>
+
+            {/* Mobile hamburger */}
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground hover:bg-surface lg:hidden"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </motion.div>
         </div>
-      </div>
-
-      {/* Floating dock navbar */}
-      <header className="sticky top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-transform mt-4">
-        <motion.div
-          initial={{ y: -80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className={cn(
-            "pointer-events-auto flex w-full max-w-5xl items-center gap-1 rounded-full border px-3 py-2 transition-all duration-500",
-            scrolled
-              ? "border-border/60 bg-background/80 shadow-[0_8px_32px_-8px_rgba(15,23,42,0.18)] backdrop-blur-2xl"
-              : "border-border/40 bg-background/70 shadow-[0_4px_24px_-6px_rgba(15,23,42,0.12)] backdrop-blur-xl",
-          )}
-        >
-          {/* Logo + full name */}
-          <Link
-            to="/"
-            className="group flex flex-1 items-center gap-2.5 rounded-full px-3 py-1.5 transition-colors hover:bg-surface lg:flex-none lg:mr-2"
-            aria-label="Protech Computer Education — home"
-          >
-            <img
-              src={LOGO_URL}
-              alt="Protech Computer Education"
-              width={120}
-              height={40}
-              className="h-7 w-auto flex-shrink-0"
-            />
-            <span className="font-display text-[0.82rem] font-semibold tracking-tight text-foreground">
-              Protech Computer Education
-            </span>
-          </Link>
-
-          {/* Divider */}
-          <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
-
-          {/* Nav links */}
-          <nav className="hidden items-center lg:flex" aria-label="Primary">
-            {NAV.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "relative rounded-full px-3.5 py-1.5 text-[0.8rem] font-medium tracking-wide transition-all duration-200",
-                    active
-                      ? "bg-foreground text-primary-foreground"
-                      : "text-muted-foreground hover:bg-surface hover:text-foreground",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Divider */}
-          <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
-
-          {/* CTA */}
-          <Link
-            to="/courses"
-            className="hidden rounded-full bg-teal px-4 py-1.5 text-[0.8rem] font-semibold text-white shadow-sm transition-all hover:brightness-110 lg:inline-flex"
-          >
-            Enroll Now
-          </Link>
-
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground hover:bg-surface lg:hidden"
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </motion.div>
       </header>
-
-      {/* Spacer so content doesn't go under the fixed bar */}
-      <div className="h-[72px]" aria-hidden />
 
       {/* Mobile drawer */}
       <AnimatePresence>
