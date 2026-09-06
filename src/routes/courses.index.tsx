@@ -87,7 +87,7 @@ function CoursesPage() {
   return (
     <SiteShell>
       {/* Custom Image Hero with Breadcrumb */}
-      <div className="relative pt-24 pb-16 border-b border-border">
+      <div className="relative pt-10 pb-16 border-b border-border">
         <div 
           className="absolute inset-0 z-0 opacity-20"
           style={{ 

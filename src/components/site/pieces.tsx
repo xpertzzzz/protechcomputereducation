@@ -100,7 +100,7 @@ export function PageHero({
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="pointer-events-none absolute inset-0 grid-field opacity-50" aria-hidden />
-      <div className="shell relative py-16 sm:py-28">
+      <div className="shell relative pt-8 pb-16 sm:pt-12 sm:pb-24">
         <Reveal>
           <span className="eyebrow">{eyebrow}</span>
           <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
