@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { EmptyState } from "@/components/site/pieces";
@@ -26,7 +26,7 @@ function List({ title, items }: { title: string; items: string[] }) {
 }
 
 function CourseDetail() {
-  const { slug } = Route.useParams();
+  const { slug = "" } = useParams<{ slug: string }>();
   const { data: course, isLoading, isError } = useCourseBySlug(slug);
 
   if (isLoading) {

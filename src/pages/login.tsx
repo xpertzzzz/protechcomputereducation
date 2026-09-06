@@ -1,6 +1,6 @@
 import { useNavigate, Link, } from "react-router-dom";
 import { useState } from "react";
-import { loginFn } from "@/server/functions";
+
 import { toast } from "sonner";
 import { Loader2, Users, GraduationCap, Award, User, Lock, Eye, EyeOff, ArrowLeft, LogIn } from "lucide-react";
 import { LOGO_URL } from "@/lib/brand";

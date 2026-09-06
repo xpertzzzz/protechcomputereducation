@@ -47,12 +47,12 @@ export function ArrowLink({
   to: string;
   children: ReactNode;
   className?: string;
-  search?: Record<string, string>;
+  search?: string;
 }) {
+  const fullTo = search ? `${to}?${search}` : to;
   return (
     <Link
-      to={to}
-      search={search as never}
+      to={fullTo}
       className={cn(
         "group inline-flex items-center gap-2 text-sm font-medium text-foreground",
         className,

@@ -1,15 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { FALLBACK_SETTINGS, type SiteSettings } from "@/lib/brand";
-import {
-  getSettingsFn,
-  getPublicCoursesFn,
-  getCourseBySlugFn,
-  getPublicGalleryFn,
-  getPublicTestimonialsFn,
-  submitEnquiryFn
-} from "@/server/functions";
-
-export { submitEnquiryFn, getSettingsFn };
 
 export type Course = {
   id: string;
@@ -57,14 +47,37 @@ export type Testimonial = {
   is_published: boolean;
 };
 
-// React Query hooks wrappers
+async function apiFetch<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
+export const submitEnquiryFn = async (data: Record<string, unknown>) => {
+  const res = await fetch("/api/enquiry", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Failed to submit enquiry");
+  return res.json();
+};
+
+export const getSettingsFn = async () => {
+  return apiFetch<SiteSettings>("/api/settings");
+};
+
 export function useSettings() {
   const query = useQuery({
     queryKey: ["settings"],
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
-      const data = await getSettingsFn();
-      return (data ?? FALLBACK_SETTINGS) as SiteSettings;
+      try {
+        const data = await apiFetch<SiteSettings>("/api/settings");
+        return (data ?? FALLBACK_SETTINGS) as SiteSettings;
+      } catch {
+        return FALLBACK_SETTINGS as SiteSettings;
+      }
     },
   });
   return { settings: (query.data ?? FALLBACK_SETTINGS) as SiteSettings, ...query };
@@ -73,35 +86,28 @@ export function useSettings() {
 export function usePublicCourses() {
   return useQuery({
     queryKey: ["courses", "public"],
-    queryFn: async () => {
-      return await getPublicCoursesFn();
-    },
+    queryFn: () => apiFetch<Course[]>("/api/courses"),
   });
 }
 
 export function useCourseBySlug(slug: string) {
   return useQuery({
     queryKey: ["course", slug],
-    queryFn: async () => {
-      return await getCourseBySlugFn({ data: slug });
-    },
+    queryFn: () => apiFetch<Course | null>(`/api/courses/${slug}`),
+    enabled: !!slug,
   });
 }
 
 export function usePublicGallery() {
   return useQuery({
     queryKey: ["gallery", "public"],
-    queryFn: async () => {
-      return await getPublicGalleryFn();
-    },
+    queryFn: () => apiFetch<GalleryItem[]>("/api/gallery"),
   });
 }
 
 export function usePublicTestimonials() {
   return useQuery({
     queryKey: ["testimonials", "public"],
-    queryFn: async () => {
-      return await getPublicTestimonialsFn();
-    },
+    queryFn: () => apiFetch<Testimonial[]>("/api/testimonials"),
   });
 }

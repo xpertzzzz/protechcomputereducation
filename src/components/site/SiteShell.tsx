@@ -19,7 +19,7 @@ const NAV = [
 function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { pathname } = useLocation();
   const { settings } = useSettings();
 
   useEffect(() => {
@@ -228,10 +228,10 @@ function Footer() {
           <FooterCol
             title="Courses"
             links={[
-              { label: "Website Designing", to: "/courses", search: { category: "Website Designing" } },
-              { label: "Website Development", to: "/courses", search: { category: "Website Development" } },
-              { label: "Programming Excellence", to: "/courses", search: { category: "Programming Excellence" } },
-              { label: "AI & Emerging Technology", to: "/courses", search: { category: "AI & Emerging Technology" } },
+              { label: "Website Designing", to: "/courses?category=Website+Designing" },
+              { label: "Website Development", to: "/courses?category=Website+Development" },
+              { label: "Programming Excellence", to: "/courses?category=Programming+Excellence" },
+              { label: "AI & Emerging Technology", to: "/courses?category=AI+%26+Emerging+Technology" },
             ]}
           />
           <FooterCol
@@ -283,7 +283,7 @@ function FooterCol({
   links,
 }: {
   title: string;
-  links: { label: string; to: string; search?: Record<string, string> }[];
+  links: { label: string; to: string }[];
 }) {
   return (
     <div>
@@ -293,7 +293,6 @@ function FooterCol({
           <li key={l.label}>
             <Link
               to={l.to}
-              search={l.search as never}
               className="link-underline text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
@@ -325,7 +324,7 @@ export function FloatingCall() {
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const reduced = useReducedMotion();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { pathname } = useLocation();
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollProgress />

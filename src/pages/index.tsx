@@ -327,8 +327,7 @@ function CourseExplorer() {
                     transition={{ delay: i * 0.05, duration: 0.45 }}
                   >
                     <Link
-                      to="/courses/$slug"
-                      params={{ slug: course.slug }}
+                      to={`/courses/${course.slug}`}
                       className="group flex items-center justify-between gap-6 py-5"
                     >
                       <div className="min-w-0">
@@ -428,8 +427,7 @@ function AISection() {
 
         <Reveal delay={0.15} className="mt-12">
           <Link
-            to="/courses"
-            search={{ category: "AI & Emerging Technology" } as never}
+            to="/courses?category=AI+%26+Emerging+Technology"
             className="group inline-flex items-center gap-2 border border-primary-foreground/30 px-6 py-3.5 text-sm transition-colors hover:border-teal hover:text-teal"
           >
             Explore the AI track

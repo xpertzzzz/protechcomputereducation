@@ -1,4 +1,4 @@
-
+import { useSearchParams } from "react-router-dom";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { PageHero } from "@/components/site/pieces";
@@ -9,7 +9,8 @@ import { useSettings } from "@/lib/data";
 
 function ContactPage() {
   const { data: settings } = useSettings();
-  const search = Route.useSearch();
+  const [searchParams] = useSearchParams();
+  const courseParam = searchParams.get("course");
   const s = settings ?? FALLBACK_SETTINGS;
   const phones = [s.phone_primary, s.phone_secondary].filter(Boolean) as string[];
 
@@ -50,10 +51,7 @@ function ContactPage() {
               <ul className="mt-4 space-y-2">
                 {phones.map((p) => (
                   <li key={p}>
-                    <a
-                      href={telHref(p)}
-                      className="link-underline font-mono text-lg tracking-tight"
-                    >
+                    <a href={telHref(p)} className="link-underline font-mono text-lg tracking-tight">
                       {p}
                     </a>
                   </li>
@@ -61,10 +59,7 @@ function ContactPage() {
               </ul>
               {phones[0] && (
                 <a
-                  href={whatsappLink(
-                    phones[0],
-                    "Hello Protech Computer Education, I would like to know more about your courses.",
-                  )}
+                  href={whatsappLink(phones[0], "Hello Protech Computer Education, I would like to know more about your courses.")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center border border-teal px-4 py-2.5 text-xs text-teal transition-colors hover:bg-teal hover:text-primary-foreground"
@@ -108,11 +103,7 @@ function ContactPage() {
             Fill this in and we'll save your enquiry, then open WhatsApp with your message ready to send.
           </p>
           <div className="mt-6">
-            {search.course ? (
-              <EnquiryForm initialCourse={search.course} />
-            ) : (
-              <EnquiryForm />
-            )}
+            <EnquiryForm initialCourse={courseParam ?? undefined} />
           </div>
         </div>
       </section>

@@ -4,8 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { EmptyState, PageHero } from "@/components/site/pieces";
-import { usePublicGallery } from "@/lib/data";
+import { usePublicGallery, type GalleryItem } from "@/lib/data";
 import { cn } from "@/lib/utils";
+
+const LOCAL_IMAGES: GalleryItem[] = [
+  { id: 'l1', image_url: '/images/1.jpeg', category: 'Classroom', title: 'Computer Lab', description: null, storage_path: null, taken_on: null, display_order: 1, featured: false, is_published: true },
+  { id: 'l2', image_url: '/images/2.jpeg', category: 'Events', title: 'Certificate Distribution', description: null, storage_path: null, taken_on: null, display_order: 2, featured: false, is_published: true },
+  { id: 'l3', image_url: '/images/3.jpeg', category: 'Events', title: 'Group Photo', description: null, storage_path: null, taken_on: null, display_order: 3, featured: false, is_published: true },
+  { id: 'l4', image_url: '/images/4.jpeg', category: 'Classroom', title: 'Practical Session', description: null, storage_path: null, taken_on: null, display_order: 4, featured: false, is_published: true },
+  { id: 'l5', image_url: '/images/5.jpeg', category: 'Campus', title: 'Institute Entrance', description: null, storage_path: null, taken_on: null, display_order: 5, featured: false, is_published: true },
+  { id: 'l6', image_url: '/images/6.png', category: 'Others', title: 'Student Work', description: null, storage_path: null, taken_on: null, display_order: 6, featured: false, is_published: true },
+  { id: 'l7', image_url: '/images/7.jpeg', category: 'Campus', title: 'Campus View', description: null, storage_path: null, taken_on: null, display_order: 7, featured: false, is_published: true },
+];
 
 function GalleryPage() {
   const { data: dbImages = [], isLoading, isError } = usePublicGallery();

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -8,7 +8,7 @@ import { COURSE_CATEGORIES, COURSE_LEVELS } from "@/lib/brand";
 import { usePublicCourses } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-type Search = { category?: string | undefined; level?: string | undefined; tech?: string | undefined };
+type Search = { category?: string; level?: string; tech?: string };
 
 function Chip({
   active,
@@ -37,8 +37,8 @@ function Chip({
 }
 
 function CoursesPage() {
-  const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/courses/" });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search: Search = Object.fromEntries(searchParams.entries()) as Search;
   const { data: courses = [], isLoading, isError } = usePublicCourses();
 
   const technologies = useMemo(() => {
@@ -54,8 +54,13 @@ function CoursesPage() {
       (!search.tech || c.technologies.includes(search.tech)),
   );
 
-  const set = (patch: Search) =>
-    navigate({ search: ((prev: Search) => ({ ...prev, ...patch })) as never, replace: true });
+  const set = (patch: Search) => {
+    const newParams: Record<string, string> = { ...search, ...patch } as Record<string, string>;
+    Object.keys(newParams).forEach((k) => {
+      if (!newParams[k]) delete newParams[k];
+    });
+    setSearchParams(newParams, { replace: true });
+  };
 
   const activeCount = [search.category, search.level, search.tech].filter(Boolean).length;
 
@@ -85,17 +90,13 @@ function CoursesPage() {
           {/* O-Level Card */}
           <div className="group relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-surface to-background p-8 shadow-sm transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/40 hover:-translate-y-1">
             <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-teal to-cobalt origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 z-20" />
-            
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-display text-2xl font-bold text-foreground">O-Level Computer Course</h3>
                 <p className="mt-1 text-sm font-semibold text-teal uppercase tracking-wider">Foundation Level (Basic Diploma)</p>
               </div>
-              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">
-                1 Year
-              </div>
+              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">1 Year</div>
             </div>
-            
             <div className="mt-6 space-y-4">
               <div>
                 <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">What you'll learn</p>
@@ -106,15 +107,9 @@ function CoursesPage() {
                 <p className="text-sm text-muted-foreground leading-relaxed">Web designer, UI designer, office automation assistant, data entry operator.</p>
               </div>
             </div>
-            
             <div className="mt-8 pt-6 border-t border-border/50">
-              <Link 
-                to="/contact" 
-                search={{ course: 'o-level' }}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors"
-              >
-                Enquire for O-Level
-                <ArrowUpRight className="h-4 w-4" />
+              <Link to="/contact?course=o-level" className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors">
+                Enquire for O-Level <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -122,17 +117,13 @@ function CoursesPage() {
           {/* A-Level Card */}
           <div className="group relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-surface to-background p-8 shadow-sm transition-all hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/40 hover:-translate-y-1">
             <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-cobalt to-teal origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 z-20" />
-            
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-display text-2xl font-bold text-foreground">A-Level Computer Course</h3>
                 <p className="mt-1 text-sm font-semibold text-cobalt uppercase tracking-wider">Advanced Level (PGDCA Eq.)</p>
               </div>
-              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">
-                1.5 - 2 Years
-              </div>
+              <div className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted-foreground border border-border">1.5 - 2 Years</div>
             </div>
-            
             <div className="mt-6 space-y-4">
               <div>
                 <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-1.5">What you'll learn</p>
@@ -143,15 +134,9 @@ function CoursesPage() {
                 <p className="text-sm text-muted-foreground leading-relaxed">Programmer, system analyst, IT specialist, freelance developer.</p>
               </div>
             </div>
-            
             <div className="mt-8 pt-6 border-t border-border/50">
-              <Link 
-                to="/contact" 
-                search={{ course: 'a-level' }}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors"
-              >
-                Enquire for A-Level
-                <ArrowUpRight className="h-4 w-4" />
+              <Link to="/contact?course=a-level" className="inline-flex items-center gap-2 text-sm font-semibold text-cobalt hover:text-teal transition-colors">
+                Enquire for A-Level <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -162,36 +147,24 @@ function CoursesPage() {
         <div className="space-y-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2">
             <span className="eyebrow mr-2 w-16">Track</span>
-            <Chip active={!search.category} onClick={() => set({ category: undefined })}>
-              All
-            </Chip>
+            <Chip active={!search.category} onClick={() => set({ category: undefined })}>All</Chip>
             {COURSE_CATEGORIES.map((c) => (
-              <Chip key={c} active={search.category === c} onClick={() => set({ category: c })}>
-                {c}
-              </Chip>
+              <Chip key={c} active={search.category === c} onClick={() => set({ category: c })}>{c}</Chip>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="eyebrow mr-2 w-16">Level</span>
-            <Chip active={!search.level} onClick={() => set({ level: undefined })}>
-              All
-            </Chip>
+            <Chip active={!search.level} onClick={() => set({ level: undefined })}>All</Chip>
             {COURSE_LEVELS.map((l) => (
-              <Chip key={l} active={search.level === l} onClick={() => set({ level: l })}>
-                {l}
-              </Chip>
+              <Chip key={l} active={search.level === l} onClick={() => set({ level: l })}>{l}</Chip>
             ))}
           </div>
           {technologies.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               <span className="eyebrow mr-2 w-16">Tech</span>
-              <Chip active={!search.tech} onClick={() => set({ tech: undefined })}>
-                All
-              </Chip>
+              <Chip active={!search.tech} onClick={() => set({ tech: undefined })}>All</Chip>
               {technologies.map((t) => (
-                <Chip key={t} active={search.tech === t} onClick={() => set({ tech: t })}>
-                  {t}
-                </Chip>
+                <Chip key={t} active={search.tech === t} onClick={() => set({ tech: t })}>{t}</Chip>
               ))}
             </div>
           )}
@@ -244,7 +217,7 @@ function CoursesPage() {
                   <div className="group flex flex-col justify-between w-full rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-cobalt/40">
                     <div>
                       <p className="eyebrow text-cobalt mb-3">{course.category}</p>
-                      <Link to="/courses/$slug" params={{ slug: course.slug }}>
+                      <Link to={`/courses/${course.slug}`}>
                         <h2 className="font-display text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-cobalt">
                           {course.name}
                         </h2>
@@ -253,18 +226,15 @@ function CoursesPage() {
                         {course.short_description}
                       </p>
                     </div>
-                    
                     <div className="mt-8 flex items-center gap-3">
-                      <Link 
-                        to="/contact" 
-                        search={{ course: course.slug }} 
+                      <Link
+                        to={`/contact?course=${course.slug}`}
                         className="flex-1 text-center bg-cobalt text-primary-foreground text-sm font-semibold py-2.5 rounded shadow-sm hover:bg-cobalt/90 hover:shadow transition-all"
                       >
                         Enroll Now
                       </Link>
-                      <Link 
-                        to="/courses/$slug" 
-                        params={{ slug: course.slug }}
+                      <Link
+                        to={`/courses/${course.slug}`}
                         className="p-2.5 rounded border border-border group-hover:border-cobalt/30 group-hover:bg-cobalt/5 transition-colors"
                         aria-label="View course details"
                       >
