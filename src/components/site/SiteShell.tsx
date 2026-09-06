@@ -16,30 +16,13 @@ const NAV = [
   { label: "Contact", to: "/contact" },
 ] as const;
 
-function Wordmark({ compact = false }: { compact?: boolean }) {
-  return (
-    <Link to="/" className="group flex items-center gap-3" aria-label="Protech Computer Education — home">
-      <img
-        src={LOGO_URL}
-        alt="Protech Computer Education"
-        width={160}
-        height={52}
-        className={cn(
-          "h-9 w-auto transition-transform duration-500 group-hover:scale-[1.02]",
-          compact && "h-8",
-        )}
-      />
-    </Link>
-  );
-}
-
 function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -48,24 +31,43 @@ function Header() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 transition-all duration-500",
-        scrolled
-          ? "border-b border-border bg-background/85 backdrop-blur-xl"
-          : "border-b border-transparent",
-      )}
-    >
-      <div className="shell">
-        <div
+    <>
+      {/* Floating dock navbar */}
+      <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <motion.div
+          initial={{ y: -80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 transition-all duration-500",
-            scrolled ? "h-16" : "h-20",
+            "pointer-events-auto flex items-center gap-1 rounded-full border px-3 py-2 transition-all duration-500",
+            scrolled
+              ? "border-border/60 bg-background/80 shadow-[0_8px_32px_-8px_rgba(15,23,42,0.18)] backdrop-blur-2xl"
+              : "border-border/40 bg-background/70 shadow-[0_4px_24px_-6px_rgba(15,23,42,0.12)] backdrop-blur-xl",
           )}
         >
-          <Wordmark compact={scrolled} />
+          {/* Logo + wordmark */}
+          <Link
+            to="/"
+            className="group mr-2 flex items-center gap-2.5 rounded-full px-3 py-1.5 transition-colors hover:bg-surface"
+            aria-label="Protech Computer Education — home"
+          >
+            <img
+              src={LOGO_URL}
+              alt="Protech Computer Education"
+              width={120}
+              height={40}
+              className="h-7 w-auto"
+            />
+            <span className="hidden font-display text-[0.8rem] font-semibold tracking-tight text-foreground sm:block">
+              Protech CE
+            </span>
+          </Link>
 
-          <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+          {/* Divider */}
+          <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
+
+          {/* Nav links */}
+          <nav className="hidden items-center lg:flex" aria-label="Primary">
             {NAV.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
@@ -73,65 +75,67 @@ function Header() {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "relative py-1 text-[0.8125rem] font-medium tracking-wide transition-colors",
-                    active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                    "relative rounded-full px-3.5 py-1.5 text-[0.8rem] font-medium tracking-wide transition-all duration-200",
+                    active
+                      ? "bg-foreground text-primary-foreground"
+                      : "text-muted-foreground hover:bg-surface hover:text-foreground",
                   )}
                 >
                   {item.label}
-                  {active && (
-                    <motion.span
-                      layoutId="nav-indicator"
-                      className="absolute -bottom-1 left-0 h-px w-full bg-teal"
-                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                    />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Link
-              to="/courses"
-              className="group hidden items-center gap-2 border border-foreground bg-foreground px-5 py-2.5 text-[0.8125rem] font-medium text-primary-foreground transition-colors hover:bg-transparent hover:text-foreground sm:inline-flex"
-            >
-              Explore Courses
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-label={open ? "Close menu" : "Open menu"}
-              className="inline-flex h-10 w-10 items-center justify-center border border-border text-foreground lg:hidden"
-            >
-              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </button>
-          </div>
-        </div>
-      </div>
+          {/* Divider */}
+          <span className="hidden h-5 w-px bg-border lg:block" aria-hidden />
 
+          {/* CTA */}
+          <Link
+            to="/courses"
+            className="hidden rounded-full bg-teal px-4 py-1.5 text-[0.8rem] font-semibold text-white shadow-sm transition-all hover:brightness-110 lg:inline-flex"
+          >
+            Enroll Now
+          </Link>
+
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground hover:bg-surface lg:hidden"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </motion.div>
+      </header>
+
+      {/* Spacer so content doesn't go under the fixed bar */}
+      <div className="h-[72px]" aria-hidden />
+
+      {/* Mobile drawer */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-border bg-background lg:hidden"
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-x-4 top-[72px] z-40 overflow-hidden rounded-2xl border border-border bg-background/95 shadow-2xl backdrop-blur-2xl lg:hidden"
           >
-            <div className="shell py-6">
+            <div className="p-5">
               <ul className="divide-y divide-border">
                 {NAV.map((item, i) => (
                   <motion.li
                     key={item.to}
-                    initial={{ opacity: 0, x: -12 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 + i * 0.05 }}
+                    transition={{ delay: 0.04 + i * 0.045 }}
                   >
                     <Link
                       to={item.to}
-                      className="flex items-center justify-between py-4 font-display text-2xl tracking-tight"
+                      className="flex items-center justify-between py-3.5 font-display text-xl tracking-tight"
                     >
                       {item.label}
                       <span className="eyebrow">0{i + 1}</span>
@@ -141,7 +145,7 @@ function Header() {
               </ul>
               <Link
                 to="/contact"
-                className="mt-6 flex items-center justify-center gap-2 bg-foreground px-5 py-3.5 text-sm font-medium text-primary-foreground"
+                className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3.5 text-sm font-medium text-primary-foreground"
               >
                 Enquire Now <ArrowUpRight className="h-4 w-4" />
               </Link>
@@ -149,7 +153,7 @@ function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
 

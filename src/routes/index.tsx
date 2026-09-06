@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
-import { ArrowUpRight, Star } from "lucide-react";
+import { ArrowUpRight, Star, Terminal, Cpu, Globe, Code2, Database, Zap, Shield, BrainCircuit } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { ArrowLink, EmptyState, SectionHead } from "@/components/site/pieces";
 import { Counter, Reveal, WordReveal } from "@/components/site/motion";
@@ -12,18 +12,19 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Protech Computer Education — Programming & Web Technology Institute" },
+      { title: "Protech Computer Education — Bringing Programming & Web Technologies for You" },
       {
         name: "description",
         content:
-          "Learn programming, web development, databases, cyber security and AI at Protech Computer Education, Bolgarh Bus Stand, Khordha, Odisha. Structured courses with practical projects.",
+          "Protech Computer Education — Bringing programming and web technologies for you. Learn web design, web development, programming, AI and emerging technologies at Bolgarh Bus Stand, Khordha, Odisha.",
       },
-      { property: "og:title", content: "Protech Computer Education" },
+      { property: "og:title", content: "Protech Computer Education — Bringing Programming & Web Technologies for You" },
       {
         property: "og:description",
-        content: "Bringing programming and web technologies for you — Bolgarh, Khordha, Odisha.",
+        content: "Bringing programming and web technologies for you. Structured courses in web design, development, programming and AI — Bolgarh, Khordha, Odisha.",
       },
-      { rel: "canonical", href: "https://protech-computer-education.lovable.app/" },
+      { name: "keywords", content: "Protech Computer Education, programming courses Bolgarh, web development Khordha, computer courses Odisha, coding institute Bolgarh" },
+      { rel: "canonical", href: "https://protechcomputereducation.in/" },
     ],
     scripts: [
       {
@@ -53,12 +54,21 @@ function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 70]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 60]);
 
   return (
     <section ref={ref} className="relative overflow-hidden border-b border-border">
+      {/* Animated grid background */}
       <div className="pointer-events-none absolute inset-0 grid-field opacity-60" aria-hidden />
-      <div className="shell relative grid gap-14 py-20 sm:py-28 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-20 lg:py-32">
+      {/* Radial glow */}
+      <div
+        className="pointer-events-none absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full opacity-20"
+        style={{ background: "radial-gradient(circle, oklch(0.7 0.126 178) 0%, transparent 70%)" }}
+        aria-hidden
+      />
+
+      <div className="shell relative grid gap-14 py-20 sm:py-28 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:py-32">
+        {/* Left: Text content */}
         <div>
           <motion.div
             initial={reduced ? false : { opacity: 0 }}
@@ -70,12 +80,11 @@ function Hero() {
             <span className="rule-line hidden max-w-40 flex-1 sm:block" />
           </motion.div>
 
-          <h1 className="mt-8 font-display text-[2.6rem] leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.6rem]">
-            <WordReveal text="Build the skills" />
-            <br />
-            <WordReveal text="behind the" />{" "}
+          <h1 className="mt-6 font-display text-[2.8rem] leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.2rem]">
+            <WordReveal text="Protech" />{" "}
+            <WordReveal text="Computer" />{" "}
             <span className="brand-gradient-text">
-              <WordReveal text="technology." />
+              <WordReveal text="Education" />
             </span>
           </h1>
 
@@ -83,16 +92,46 @@ function Hero() {
             initial={reduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7 }}
-            className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+            className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-foreground/80 sm:text-xl"
           >
-            Learn programming, web development, databases, cyber security, AI and emerging
-            technologies through structured learning and practical projects.
+            Bringing programming and web technologies for you.
           </motion.p>
+
+          <motion.p
+            initial={reduced ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.62, duration: 0.7 }}
+            className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground"
+          >
+            Learn web design, web development, programming, databases, cyber security and AI
+            through structured courses and practical projects.
+          </motion.p>
+
+          {/* Tech stack badges */}
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.6 }}
+            className="mt-8 flex flex-wrap gap-2"
+          >
+            {["HTML/CSS", "JavaScript", "Python", "C/C++", "Java", "PHP", "MySQL", "React", "AI/ML"].map((tech, i) => (
+              <motion.span
+                key={tech}
+                initial={reduced ? false : { opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + i * 0.06, duration: 0.4 }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 font-mono text-[0.7rem] text-foreground/70"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-teal" />
+                {tech}
+              </motion.span>
+            ))}
+          </motion.div>
 
           <motion.div
             initial={reduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.62, duration: 0.7 }}
+            transition={{ delay: 0.72, duration: 0.7 }}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
             <Link
@@ -111,11 +150,13 @@ function Hero() {
           </motion.div>
         </div>
 
-        <motion.div style={{ y }} className="relative">
-          <CodePanel />
+        {/* Right: Animated tech visual */}
+        <motion.div style={{ y }} className="relative hidden lg:block">
+          <TechVisual />
         </motion.div>
       </div>
 
+      {/* Stats strip */}
       <div className="shell relative border-t border-border">
         <dl className="grid grid-cols-2 divide-border sm:grid-cols-4 sm:divide-x">
           {[
@@ -137,53 +178,99 @@ function Hero() {
   );
 }
 
-function CodePanel() {
-  const lines = [
-    { k: "const", v: "protech", op: " = {" },
-    { k: "  focus", v: "'practical technology skills'", op: "," },
-    { k: "  tracks", v: "['design', 'development', 'programming', 'ai']", op: "," },
-    { k: "  method", v: "'learn → practice → build → grow'", op: "," },
-    { k: "  place", v: "'Bolgarh, Khordha'", op: "," },
+function TechVisual() {
+  const reduced = useReducedMotion();
+
+  const tracks = [
+    { icon: Globe,        label: "Web Design",      color: "text-teal",   bg: "bg-teal/10",   skills: ["HTML", "CSS", "Figma"] },
+    { icon: Code2,        label: "Web Development", color: "text-cobalt", bg: "bg-cobalt/10", skills: ["JS", "PHP", "MySQL"] },
+    { icon: Terminal,     label: "Programming",     color: "text-teal",   bg: "bg-teal/10",   skills: ["C", "C++", "Java", "Python"] },
+    { icon: BrainCircuit, label: "AI & ML",         color: "text-cobalt", bg: "bg-cobalt/10", skills: ["TensorFlow", "NLP", "Data"] },
   ];
+
   return (
-    <div className="relative border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border px-5 py-3">
-        <span className="eyebrow">protech.config</span>
-        <div className="flex gap-1.5" aria-hidden>
-          <span className="h-2 w-2 rounded-full bg-teal" />
-          <span className="h-2 w-2 rounded-full bg-cobalt" />
-          <span className="h-2 w-2 rounded-full bg-hairline" />
+    <div className="relative">
+      {/* Floating ambient orb */}
+      <motion.div
+        animate={reduced ? {} : { y: [0, -12, 0] }}
+        transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+        className="absolute -top-6 -right-6 h-32 w-32 rounded-full"
+        style={{ background: "radial-gradient(circle, oklch(0.62 0.183 262 / 0.15) 0%, transparent 70%)" }}
+        aria-hidden
+      />
+
+      {/* Terminal header card */}
+      <motion.div
+        initial={reduced ? false : { opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.7 }}
+        className="relative rounded-2xl border border-border bg-foreground p-4 shadow-xl"
+      >
+        {/* Traffic lights */}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400" aria-hidden />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" aria-hidden />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400" aria-hidden />
+          <span className="ml-2 font-mono text-[0.65rem] text-white/40">protech ~ learning-env</span>
         </div>
-      </div>
-      <div className="overflow-x-auto p-5 font-mono text-[0.72rem] leading-7 sm:text-xs">
-        {lines.map((l, i) => (
+        {/* Terminal lines */}
+        <div className="space-y-1 font-mono text-[0.72rem] leading-6">
+          {[
+            { prompt: "$", cmd: "npx enroll --course=web-dev", color: "text-white/90" },
+            { prompt: "→", cmd: "Installing skills...",         color: "text-teal" },
+            { prompt: "→", cmd: "Loaded: HTML CSS JS PHP MySQL", color: "text-teal" },
+            { prompt: "✓", cmd: "Ready to build!",              color: "text-green-400" },
+          ].map((line, i) => (
+            <motion.div
+              key={i}
+              initial={reduced ? false : { opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8 + i * 0.15, duration: 0.45 }}
+              className="flex gap-2"
+            >
+              <span className="text-teal/70">{line.prompt}</span>
+              <span className={line.color}>{line.cmd}</span>
+            </motion.div>
+          ))}
           <motion.div
-            key={l.k}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 + i * 0.12, duration: 0.5 }}
-            className="whitespace-nowrap"
+            animate={reduced ? {} : { opacity: [1, 0, 1] }}
+            transition={{ repeat: Infinity, duration: 1.1, delay: 1.5 }}
+            className="h-4 w-1.5 rounded-sm bg-teal inline-block translate-y-0.5"
+          />
+        </div>
+      </motion.div>
+
+      {/* Track cards grid */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        {tracks.map(({ icon: Icon, label, color, bg, skills }, i) => (
+          <motion.div
+            key={label}
+            initial={reduced ? false : { opacity: 0, y: 16, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 1.05 + i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={reduced ? {} : { y: -3, scale: 1.02 }}
+            className="group cursor-default rounded-xl border border-border bg-card p-3.5 shadow-sm transition-shadow hover:shadow-md"
           >
-            <span className="text-cobalt">{l.k}</span>
-            <span className="text-muted-foreground"> {l.k === "const" ? "" : ":"} </span>
-            <span className="text-teal">{l.v}</span>
-            <span className="text-muted-foreground">{l.op}</span>
+            <div className={cn("mb-2 inline-flex rounded-lg p-2", bg)}>
+              <Icon className={cn("h-4 w-4", color)} />
+            </div>
+            <p className="font-display text-[0.82rem] font-semibold tracking-tight text-foreground">{label}</p>
+            <p className="mt-1 font-mono text-[0.65rem] text-muted-foreground">{skills.join(" · ")}</p>
           </motion.div>
         ))}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="text-muted-foreground"
-        >
-          {"}"}
-          <motion.span
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ repeat: Infinity, duration: 1.1 }}
-            className="ml-1 inline-block h-3.5 w-1.5 translate-y-0.5 bg-teal"
-          />
-        </motion.div>
       </div>
+
+      {/* Floating metrics badge */}
+      <motion.div
+        initial={reduced ? false : { opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.5, duration: 0.5 }}
+        animate-float
+        className="absolute -bottom-4 -left-6 flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 shadow-lg"
+      >
+        <Zap className="h-3.5 w-3.5 text-teal" />
+        <span className="font-mono text-[0.68rem] font-medium text-foreground">17 courses · 4 tracks</span>
+      </motion.div>
     </div>
   );
 }
