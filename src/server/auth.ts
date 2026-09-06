@@ -5,7 +5,7 @@ import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { getCookie, setCookie } from '@tanstack/react-start/server'; // or similar cookies library if using Start
 
-const secretKey = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback_secret');
+const secretKey = new TextEncoder().encode(process.env['JWT_SECRET'] || 'fallback_secret');
 
 export async function createToken(payload: any) {
   const token = await new SignJWT(payload)

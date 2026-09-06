@@ -2,9 +2,8 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { ArrowUpRight, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { usePublicCourses, useSettings, submitEnquiryFn, type Course } from "@/lib/data";
 import { enquiryWhatsAppMessage, whatsappLink } from "@/lib/brand";
-import { usePublicCourses, useSettings, type Course } from "@/lib/data";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your full name").max(120),
@@ -64,22 +63,24 @@ export function EnquiryForm({
     const courseName = presetCourse?.name ?? selected?.name ?? null;
 
     // STEP 1 — always persist the enquiry first.
-    const { error } = await supabase.from("enquiries").insert({
-      name: parsed.data.name,
-      mobile: parsed.data.mobile,
-      email: parsed.data.email || null,
-      date_of_birth: parsed.data.date_of_birth || null,
-      course_id: presetCourse?.id ?? selected?.id ?? null,
-      course_name: courseName,
-      message: parsed.data.message || null,
-    });
-
-    setPending(false);
-
-    if (error) {
+    try {
+      await submitEnquiryFn({
+        data: {
+          name: parsed.data.name,
+          mobile: parsed.data.mobile,
+          email: parsed.data.email || null,
+          date_of_birth: parsed.data.date_of_birth || null,
+          course_id: presetCourse?.id ?? selected?.id ?? null,
+          course_name: courseName,
+          message: parsed.data.message || null,
+        }
+      });
+    } catch (error) {
+      setPending(false);
       toast.error("We couldn't save your enquiry. Please call 7008414704 instead.");
       return;
     }
+    setPending(false);
 
     setDone(true);
     toast.success("Enquiry received. Opening WhatsApp…");
