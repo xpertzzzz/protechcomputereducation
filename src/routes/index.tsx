@@ -67,7 +67,7 @@ function Hero() {
         aria-hidden
       />
 
-      <div className="shell relative grid gap-14 pt-32 pb-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:pt-40 lg:pb-20">
+      <div className="shell relative grid gap-14 pt-12 pb-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:pt-20 lg:pb-20">
         {/* Left: Text content */}
         <div>
           <motion.div
