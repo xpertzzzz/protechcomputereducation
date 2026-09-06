@@ -1,17 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { db } from "@/db";
-import { students } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { getStudentsFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/lib/brand";
 import { exportStudentsFn } from "@/lib/export";
 import { useState } from "react";
 import { Download } from "lucide-react";
-
-export const getStudentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return await db.select().from(students).orderBy(desc(students.createdAt));
-});
 
 export const Route = createFileRoute("/admin/students")({
   component: AdminStudents,

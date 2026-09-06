@@ -1,29 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { db } from "@/db";
-import { payments, students, courses } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { getPaymentsFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
 import { formatINR, formatDate } from "@/lib/brand";
 import { exportPaymentsFn } from "@/lib/export";
 import { useState } from "react";
 import { Download } from "lucide-react";
-
-export const getPaymentsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return await db.select({
-    id: payments.id,
-    amount: payments.amount,
-    paymentDate: payments.paymentDate,
-    status: payments.status,
-    paymentMethod: payments.paymentMethod,
-    studentName: students.fullName,
-    courseName: courses.name
-  })
-  .from(payments)
-  .leftJoin(students, eq(payments.studentId, students.id))
-  .leftJoin(courses, eq(payments.courseId, courses.id))
-  .orderBy(desc(payments.paymentDate));
-});
 
 export const Route = createFileRoute("/admin/payments")({
   component: AdminPayments,

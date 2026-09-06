@@ -1,32 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { db } from "@/db";
-import { students, courses, enquiries, payments } from "@/db/schema";
-import { sql, eq } from "drizzle-orm";
+import { getDashboardStatsFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
 import { Users, BookOpen, MessageSquare, CreditCard } from "lucide-react";
 import { formatINR } from "@/lib/brand";
-
-export const getDashboardStatsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const [
-    studentsCount,
-    coursesCount,
-    enquiriesCount,
-    revenueData
-  ] = await Promise.all([
-    db.select({ count: sql<number>`count(*)` }).from(students),
-    db.select({ count: sql<number>`count(*)` }).from(courses),
-    db.select({ count: sql<number>`count(*)` }).from(enquiries).where(eq(enquiries.status, 'New')),
-    db.select({ sum: sql<number>`sum(amount)` }).from(payments).where(eq(payments.status, 'Paid'))
-  ]);
-
-  return {
-    totalStudents: Number(studentsCount[0]?.count ?? 0),
-    totalCourses: Number(coursesCount[0]?.count ?? 0),
-    newEnquiries: Number(enquiriesCount[0]?.count ?? 0),
-    totalRevenue: Number(revenueData[0]?.sum ?? 0),
-  };
-});
 
 export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,

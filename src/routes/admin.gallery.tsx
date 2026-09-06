@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { db } from "@/db";
-import { galleryItems } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { getAdminGalleryFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
-
-export const getAdminGalleryFn = createServerFn({ method: "GET" }).handler(async () => {
-  return await db.select().from(galleryItems).orderBy(desc(galleryItems.createdAt));
-});
 
 export const Route = createFileRoute("/admin/gallery")({
   component: AdminGallery,

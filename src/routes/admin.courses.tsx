@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { db } from "@/db";
-import { courses } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { getAdminCoursesFn } from "@/server/admin";
 import { useQuery } from "@tanstack/react-query";
-
-export const getAdminCoursesFn = createServerFn({ method: "GET" }).handler(async () => {
-  return await db.select().from(courses).orderBy(desc(courses.createdAt));
-});
 
 export const Route = createFileRoute("/admin/courses")({
   component: AdminCourses,
