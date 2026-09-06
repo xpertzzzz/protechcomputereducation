@@ -60,7 +60,7 @@ function CourseDetail() {
   if (isLoading) {
     return (
       <SiteShell>
-        <div className="shell py-32">
+        <div className="shell pt-12 pb-32">
           <div className="h-10 w-2/3 animate-pulse bg-surface" />
           <div className="mt-6 h-40 animate-pulse bg-surface" />
         </div>
@@ -71,7 +71,7 @@ function CourseDetail() {
   if (isError || !course) {
     return (
       <SiteShell>
-        <div className="shell py-32">
+        <div className="shell pt-12 pb-32">
           <EmptyState
             title="This course isn't available"
             body="It may have been renamed or unpublished. Browse the catalogue to see everything currently offered."
@@ -93,7 +93,7 @@ function CourseDetail() {
     <SiteShell>
       <section className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0 grid-field opacity-50" aria-hidden />
-        <div className="shell relative py-12 sm:py-16">
+        <div className="shell relative pt-8 pb-12 sm:pt-12 sm:pb-16">
           <Link
             to="/courses"
             className="group inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"

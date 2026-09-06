@@ -61,23 +61,55 @@ function GalleryPage() {
 
   return (
     <SiteShell>
-      <PageHero
-        eyebrow="Gallery"
-        title="The institute, as it is."
-        lead="Photographs of classes, sessions and student work, published by the institute."
-      />
+      {/* Custom Image Hero */}
+      <div className="relative pt-10 pb-16 border-b border-border">
+        <div 
+          className="absolute inset-0 z-0 opacity-20"
+          style={{ 
+            backgroundImage: 'url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        />
+        <div className="absolute inset-0 z-0 bg-background/80 backdrop-blur-sm" />
+        
+        <div className="shell relative z-10 flex flex-col items-center text-center">
+          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+            <span>›</span>
+            <span className="text-foreground">Gallery</span>
+          </div>
+          
+          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-7xl">
+            Gallery
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Moments from our campus, classrooms, student work, and institute events.
+          </p>
+          
+          <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface/80 backdrop-blur px-5 py-2 text-xs font-medium shadow-sm">
+            <span className="text-teal font-bold">✓</span>
+            Verified
+            <span className="text-muted-foreground mx-1">|</span>
+            Government Recognized
+            <span className="text-muted-foreground mx-1">|</span>
+            ISO Certified
+          </div>
+        </div>
+      </div>
 
       <section className="shell py-14">
         {categories.length > 1 && (
-          <div className="flex flex-wrap gap-2 border-b border-border pb-8">
+          <div className="flex flex-wrap justify-center gap-3 pb-8">
             <button
               type="button"
               onClick={() => setCategory(null)}
               className={cn(
-                "border px-4 py-2 text-xs transition-colors",
+                "rounded-full px-6 py-2.5 text-sm font-semibold transition-all shadow-sm border",
                 !category
-                  ? "border-foreground bg-foreground text-primary-foreground"
-                  : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
+                  ? "border-cobalt bg-cobalt text-white shadow-md"
+                  : "border-border bg-card text-foreground hover:border-cobalt/30 hover:text-cobalt",
               )}
             >
               All
@@ -88,10 +120,10 @@ function GalleryPage() {
                 type="button"
                 onClick={() => setCategory(c)}
                 className={cn(
-                  "border px-4 py-2 text-xs transition-colors",
+                  "rounded-full px-6 py-2.5 text-sm font-semibold transition-all shadow-sm border",
                   category === c
-                    ? "border-foreground bg-foreground text-primary-foreground"
-                    : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
+                    ? "border-cobalt bg-cobalt text-white shadow-md"
+                    : "border-border bg-card text-foreground hover:border-cobalt/30 hover:text-cobalt",
                 )}
               >
                 {c}
@@ -100,18 +132,18 @@ function GalleryPage() {
           </div>
         )}
 
-        <div className="mt-10">
+        <div className="mt-8">
           {isError ? (
             <EmptyState
               title="We couldn't load the gallery"
               body="Please refresh the page. If it keeps happening, contact the institute on 7008414704."
             />
           ) : isLoading ? (
-            <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+            <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <div
                   key={i}
-                  className="mb-4 animate-pulse bg-surface"
+                  className="mb-6 animate-pulse rounded-3xl bg-surface-2"
                   style={{ height: 180 + (i % 3) * 70 }}
                 />
               ))}
@@ -122,7 +154,7 @@ function GalleryPage() {
               body="Photographs uploaded by the institute will appear here. Nothing on this page is stock imagery."
             />
           ) : (
-            <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+            <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
               {shown.map((img, i) => (
                 <motion.button
                   key={img.id}
@@ -132,7 +164,7 @@ function GalleryPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.6, delay: (i % 6) * 0.05 }}
-                  className="group mb-4 block w-full break-inside-avoid overflow-hidden bg-surface-2 text-left"
+                  className="group mb-6 block w-full break-inside-avoid overflow-hidden rounded-3xl border border-border/50 bg-card shadow-sm text-left transition-all hover:shadow-md hover:border-cobalt/30"
                   aria-label={`Open ${img.title ?? "gallery image"}`}
                 >
                   <img
@@ -142,9 +174,9 @@ function GalleryPage() {
                     className="w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   />
                   {(img.title || img.category) && (
-                    <div className="flex items-baseline justify-between gap-3 bg-background px-3 py-3">
-                      <span className="truncate text-xs">{img.title ?? "Untitled"}</span>
-                      <span className="eyebrow shrink-0">{img.category}</span>
+                    <div className="flex flex-col gap-1 bg-background/95 px-5 py-4 border-t border-border/50 backdrop-blur-sm">
+                      <span className="font-semibold text-sm text-foreground">{img.title ?? "Untitled"}</span>
+                      <span className="text-[0.65rem] font-bold text-cobalt uppercase tracking-wider">{img.category}</span>
                     </div>
                   )}
                 </motion.button>

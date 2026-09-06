@@ -511,70 +511,92 @@ function GalleryStrip() {
 
 function TestimonialsSection() {
   const { data: items = [], isLoading } = usePublicTestimonials();
-  const [index, setIndex] = useState(0);
-  const current = items[index];
 
   return (
     <section className="border-t border-border bg-surface">
       <div className="shell py-12 sm:py-16">
-        <SectionHead index="06" eyebrow="In their words" title="Student experiences." />
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <SectionHead index="06" eyebrow="In their words" title="Student experiences." />
+          <Link
+            to="/testimonials"
+            className="group hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-cobalt"
+          >
+            See all testimonials
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+        </div>
+        
         <div className="mt-14">
           {isLoading ? (
-            <div className="h-40 animate-pulse bg-surface-2" />
-          ) : items.length === 0 || !current ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-64 animate-pulse rounded-3xl bg-surface-2" />
+              ))}
+            </div>
+          ) : items.length === 0 ? (
             <EmptyState
               title="No student testimonials published yet"
               body="When students share their experience with the institute, their words will appear here — never anything invented on their behalf."
             />
           ) : (
-            <div>
-              <motion.blockquote
-                key={current.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="max-w-4xl font-display text-2xl leading-[1.35] tracking-tight sm:text-3xl"
-              >
-                “{current.content}”
-              </motion.blockquote>
-              <div className="mt-10 flex flex-wrap items-center justify-between gap-6 border-t border-border pt-6">
-                <div className="flex items-center gap-4">
-                  {current.photo_url && (
-                    <img
-                      src={current.photo_url}
-                      alt={current.student_name}
-                      className="h-11 w-11 rounded-full object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                  <div>
-                    <p className="text-sm font-medium">{current.student_name}</p>
-                    <p className="text-xs text-muted-foreground">{current.course_name ?? "Student"}</p>
-                  </div>
-                  <div className="flex gap-0.5" aria-label={`${current.rating} out of 5`}>
-                    {Array.from({ length: current.rating }).map((_, i) => (
-                      <Star key={i} className="h-3.5 w-3.5 fill-teal text-teal" />
-                    ))}
-                  </div>
-                </div>
-                {items.length > 1 && (
-                  <div className="flex items-center gap-2">
-                    {items.map((t, i) => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        aria-label={`Show testimonial ${i + 1}`}
-                        onClick={() => setIndex(i)}
-                        className={cn(
-                          "h-px w-8 transition-colors",
-                          i === index ? "bg-foreground" : "bg-border hover:bg-muted-foreground",
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {items.slice(0, 3).map((t, i) => (
+                  <Reveal key={t.id} delay={(i % 3) * 0.08} className="h-full">
+                    <div className="group relative flex h-full flex-col justify-between rounded-3xl bg-card p-8 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] border border-border/50 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/20">
+                      {/* Watermark Quote */}
+                      <div className="absolute top-4 right-6 text-border/40 font-serif text-8xl leading-none select-none pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-cobalt/10">
+                        "
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <div className="flex gap-1 mb-6 text-[#F59E0B]">
+                          {Array.from({ length: t.rating }).map((_, s) => (
+                            <Star key={s} className="h-4 w-4 fill-current" />
+                          ))}
+                        </div>
+                        <p className="text-[0.95rem] text-foreground/80 leading-relaxed italic font-medium line-clamp-5">
+                          "{t.content}"
+                        </p>
+                      </div>
+
+                      <div className="mt-8 flex items-center gap-4 pt-6">
+                        {t.photo_url ? (
+                          <img
+                            src={t.photo_url}
+                            alt={t.student_name}
+                            loading="lazy"
+                            className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-background border border-border/50"
+                          />
+                        ) : (
+                          <div
+                            aria-hidden
+                            className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-cobalt/10 font-display text-lg font-bold text-cobalt ring-2 ring-background border border-cobalt/20"
+                          >
+                            {t.student_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                          </div>
                         )}
-                      />
-                    ))}
-                  </div>
-                )}
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold text-foreground">{t.student_name}</p>
+                          <p className="mt-0.5 truncate text-[0.65rem] font-bold text-cobalt uppercase tracking-wider">
+                            {t.course_name ?? "Student Review"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
               </div>
-            </div>
+              <div className="mt-10 sm:hidden">
+                <Link
+                  to="/testimonials"
+                  className="group inline-flex items-center justify-center w-full gap-2 border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground hover:bg-surface"
+                >
+                  See all testimonials
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </div>

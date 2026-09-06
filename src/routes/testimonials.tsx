@@ -60,43 +60,50 @@ function TestimonialsPage() {
             }
           />
         ) : (
-          <div className="border-t border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {items.map((t, i) => (
-              <Reveal key={t.id} delay={(i % 4) * 0.06}>
-                <figure className="grid gap-6 border-b border-border py-12 md:grid-cols-[16rem_1fr] md:gap-16">
-                  <figcaption className="flex items-start gap-4">
+              <Reveal key={t.id} delay={(i % 6) * 0.08} className="h-full">
+                <div className="group relative flex h-full flex-col justify-between rounded-3xl bg-card p-8 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] border border-border/50 overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-cobalt/20">
+                  {/* Watermark Quote */}
+                  <div className="absolute top-4 right-6 text-border/40 font-serif text-8xl leading-none select-none pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-cobalt/10">
+                    "
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex gap-1 mb-6 text-[#F59E0B]">
+                      {Array.from({ length: t.rating }).map((_, s) => (
+                        <Star key={s} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-[0.95rem] text-foreground/80 leading-relaxed italic font-medium">
+                      "{t.content}"
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex items-center gap-4 pt-6">
                     {t.photo_url ? (
                       <img
                         src={t.photo_url}
                         alt={t.student_name}
                         loading="lazy"
-                        className="h-14 w-14 shrink-0 rounded-full object-cover"
+                        className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-background border border-border/50"
                       />
                     ) : (
-                      <span
+                      <div
                         aria-hidden
-                        className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-surface-2 font-display text-lg"
+                        className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-cobalt/10 font-display text-lg font-bold text-cobalt ring-2 ring-background border border-cobalt/20"
                       >
-                        {t.student_name.charAt(0)}
-                      </span>
+                        {t.student_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                      </div>
                     )}
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">{t.student_name}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{t.course_name ?? "Student"}</p>
-                      <div className="mt-2 flex gap-0.5" aria-label={`${t.rating} out of 5`}>
-                        {Array.from({ length: t.rating }).map((_, s) => (
-                          <Star key={s} className="h-3 w-3 fill-teal text-teal" />
-                        ))}
-                      </div>
-                      <p className="mt-2 font-mono text-[0.65rem] text-muted-foreground">
-                        {formatDate(t.given_on)}
+                      <p className="truncate text-sm font-bold text-foreground">{t.student_name}</p>
+                      <p className="mt-0.5 truncate text-[0.65rem] font-bold text-cobalt uppercase tracking-wider">
+                        {t.course_name ?? "Student Review"}
                       </p>
                     </div>
-                  </figcaption>
-                  <blockquote className="font-display text-xl leading-[1.45] tracking-tight sm:text-2xl">
-                    “{t.content}”
-                  </blockquote>
-                </figure>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
