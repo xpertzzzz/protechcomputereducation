@@ -1,4 +1,4 @@
-export const LOGO_URL: string = "/logo.png";
+export const LOGO_URL: string = "/logowithtext.png";
 
 export const SITE_URL = "https://protech-computer-education.lovable.app";
 

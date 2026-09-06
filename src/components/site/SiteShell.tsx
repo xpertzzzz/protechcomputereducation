@@ -20,6 +20,7 @@ function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { settings } = useSettings();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -32,23 +33,49 @@ function Header() {
 
   return (
     <>
+      {/* Top Contact Bar */}
+      <div className="hidden lg:flex items-center justify-between px-6 py-2.5 bg-cobalt text-primary-foreground text-[0.7rem] font-semibold tracking-wide z-40 relative">
+        <div className="flex items-center gap-6">
+          <a href={`tel:${settings.phone_primary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+            <Phone className="h-3 w-3" />
+            {settings.phone_primary}
+          </a>
+          {settings.phone_secondary && (
+            <a href={`tel:${settings.phone_secondary}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+              <Phone className="h-3 w-3" />
+              {settings.phone_secondary}
+            </a>
+          )}
+          <a href={whatsappLink(settings.whatsapp_number, "Hello")} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-[#25D366] hover:text-[#25D366]/80 transition-colors">
+            <span className="w-2 h-2 rounded-full bg-[#25D366]" />
+            WHATSAPP
+          </a>
+        </div>
+        <div className="flex items-center gap-6 uppercase">
+          <span>{settings.address_line}, {settings.city}, {settings.state} — {settings.pincode}</span>
+          <Link to="/login" className="flex items-center gap-1.5 border border-primary-foreground/30 px-3 py-1 rounded hover:bg-primary-foreground hover:text-cobalt transition-colors">
+            Login
+          </Link>
+        </div>
+      </div>
+
       {/* Floating dock navbar */}
-      <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <header className="sticky top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-transform mt-4">
         <motion.div
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "pointer-events-auto flex items-center gap-1 rounded-full border px-3 py-2 transition-all duration-500",
+            "pointer-events-auto flex w-full max-w-5xl items-center gap-1 rounded-full border px-3 py-2 transition-all duration-500",
             scrolled
               ? "border-border/60 bg-background/80 shadow-[0_8px_32px_-8px_rgba(15,23,42,0.18)] backdrop-blur-2xl"
               : "border-border/40 bg-background/70 shadow-[0_4px_24px_-6px_rgba(15,23,42,0.12)] backdrop-blur-xl",
           )}
         >
-          {/* Logo + wordmark */}
+          {/* Logo + full name */}
           <Link
             to="/"
-            className="group mr-2 flex items-center gap-2.5 rounded-full px-3 py-1.5 transition-colors hover:bg-surface"
+            className="group flex flex-1 items-center gap-2.5 rounded-full px-3 py-1.5 transition-colors hover:bg-surface lg:flex-none lg:mr-2"
             aria-label="Protech Computer Education — home"
           >
             <img
@@ -56,10 +83,10 @@ function Header() {
               alt="Protech Computer Education"
               width={120}
               height={40}
-              className="h-7 w-auto"
+              className="h-7 w-auto flex-shrink-0"
             />
-            <span className="hidden font-display text-[0.8rem] font-semibold tracking-tight text-foreground sm:block">
-              Protech CE
+            <span className="font-display text-[0.82rem] font-semibold tracking-tight text-foreground">
+              Protech Computer Education
             </span>
           </Link>
 
@@ -167,8 +194,8 @@ function Footer() {
   ].filter(([, url]) => Boolean(url)) as [string, string][];
 
   return (
-    <footer className="mt-32 border-t border-border bg-surface">
-      <div className="shell py-16">
+    <footer className="mt-16 border-t border-border bg-surface">
+      <div className="shell py-12">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div className="max-w-sm">
             <img src={LOGO_URL} alt={settings.institute_name} className="h-10 w-auto" />

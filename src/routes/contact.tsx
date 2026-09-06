@@ -40,7 +40,7 @@ function ContactPage() {
         lead="Send an enquiry and it is saved with us before WhatsApp opens — so nothing is lost, even if the chat is closed."
       />
 
-      <section className="shell grid gap-16 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+      <section className="shell grid gap-16 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
         <div className="space-y-10">
           <Reveal>
             <div className="border-t border-border pt-8">

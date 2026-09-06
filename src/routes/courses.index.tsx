@@ -86,11 +86,35 @@ function CoursesPage() {
 
   return (
     <SiteShell>
-      <PageHero
-        eyebrow="Catalogue"
-        title="Every course, in order of how it's learned."
-        lead="Structured programmes across website designing, website development, programming excellence and AI. Filter to find where you belong."
-      />
+      {/* Custom Image Hero with Breadcrumb */}
+      <div className="relative pt-24 pb-16 border-b border-border">
+        <div 
+          className="absolute inset-0 z-0 opacity-20"
+          style={{ 
+            backgroundImage: 'url("https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        />
+        {/* Light theme overlay */}
+        <div className="absolute inset-0 z-0 bg-background/80 backdrop-blur-sm" />
+        
+        <div className="shell relative z-10 flex flex-col items-center text-center">
+          <div className="mb-5 inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+            <span>›</span>
+            <span className="text-foreground">Courses</span>
+          </div>
+          
+          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-7xl">
+            Our Courses
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Structured programmes across website designing, website development, programming excellence and AI. Filter to find where you belong.
+          </p>
+        </div>
+      </div>
 
       <section className="shell py-14">
         <div className="space-y-6 border-b border-border pb-8">
@@ -163,7 +187,7 @@ function CoursesPage() {
             body="Try clearing a filter, or browse the full catalogue to see everything currently offered."
           />
         ) : (
-          <ul className="border-t border-border">
+          <ul className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence initial={false}>
               {filtered.map((course, i) => (
                 <motion.li
@@ -173,30 +197,39 @@ function CoursesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.25) }}
+                  className="flex"
                 >
-                  <Link
-                    to="/courses/$slug"
-                    params={{ slug: course.slug }}
-                    className="group grid gap-4 border-b border-border py-8 transition-colors hover:bg-surface md:grid-cols-[3rem_1.1fr_1.4fr_auto] md:items-center md:gap-8 md:px-4"
-                  >
-                    <span className="eyebrow">{String(i + 1).padStart(2, "0")}</span>
+                  <div className="group flex flex-col justify-between w-full rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-cobalt/40">
                     <div>
-                      <h2 className="font-display text-2xl tracking-tight transition-transform duration-500 md:group-hover:translate-x-1">
-                        {course.name}
-                      </h2>
-                      <p className="eyebrow mt-2">{course.category}</p>
+                      <p className="eyebrow text-cobalt mb-3">{course.category}</p>
+                      <Link to="/courses/$slug" params={{ slug: course.slug }}>
+                        <h2 className="font-display text-2xl font-bold tracking-tight text-foreground transition-colors group-hover:text-cobalt">
+                          {course.name}
+                        </h2>
+                      </Link>
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                        {course.short_description}
+                      </p>
                     </div>
-                    <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-                      {course.short_description}
-                    </p>
-                    <div className="flex items-center gap-6">
-                      <div className="text-right">
-                        <p className="text-xs font-medium">{course.level}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{course.duration ?? "—"}</p>
-                      </div>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
+                    
+                    <div className="mt-8 flex items-center gap-3">
+                      <Link 
+                        to="/contact" 
+                        search={{ course: course.slug }} 
+                        className="flex-1 text-center bg-cobalt text-primary-foreground text-sm font-semibold py-2.5 rounded shadow-sm hover:bg-cobalt/90 hover:shadow transition-all"
+                      >
+                        Enroll Now
+                      </Link>
+                      <Link 
+                        to="/courses/$slug" 
+                        params={{ slug: course.slug }}
+                        className="p-2.5 rounded border border-border group-hover:border-cobalt/30 group-hover:bg-cobalt/5 transition-colors"
+                        aria-label="View course details"
+                      >
+                        <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-cobalt transition-colors" />
+                      </Link>
                     </div>
-                  </Link>
+                  </div>
                 </motion.li>
               ))}
             </AnimatePresence>

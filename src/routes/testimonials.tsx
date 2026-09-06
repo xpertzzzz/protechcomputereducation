@@ -34,7 +34,7 @@ function TestimonialsPage() {
         lead="Every testimonial on this page is published by the institute from a real student. Nothing here is written on their behalf."
       />
 
-      <section className="shell py-16">
+      <section className="shell py-12">
         {isError ? (
           <EmptyState
             title="We couldn't load testimonials"

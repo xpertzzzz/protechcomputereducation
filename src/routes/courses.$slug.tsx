@@ -93,7 +93,7 @@ function CourseDetail() {
     <SiteShell>
       <section className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0 grid-field opacity-50" aria-hidden />
-        <div className="shell relative py-16 sm:py-24">
+        <div className="shell relative py-12 sm:py-16">
           <Link
             to="/courses"
             className="group inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
@@ -116,7 +116,6 @@ function CourseDetail() {
           <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-border pt-8 sm:grid-cols-4">
             {[
               ["Level", course.level],
-              ["Duration", course.duration ?? "—"],
               ["Track", course.category],
               ["Technologies", String(course.technologies.length || "—")],
             ].map(([k, v]) => (
@@ -129,7 +128,7 @@ function CourseDetail() {
         </div>
       </section>
 
-      <div className="shell grid gap-16 py-16 lg:grid-cols-[1.35fr_0.65fr] lg:gap-24">
+      <div className="shell grid gap-16 py-12 lg:grid-cols-[1.35fr_0.65fr] lg:gap-24">
         <div>
           {course.image_url && (
             <div className="mb-12 overflow-hidden bg-surface-2">

@@ -67,7 +67,7 @@ function Hero() {
         aria-hidden
       />
 
-      <div className="shell relative grid gap-14 py-20 sm:py-28 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:py-32">
+      <div className="shell relative grid gap-14 pt-32 pb-16 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:pt-40 lg:pb-20">
         {/* Left: Text content */}
         <div>
           <motion.div
@@ -199,49 +199,8 @@ function TechVisual() {
         aria-hidden
       />
 
-      {/* Terminal header card */}
-      <motion.div
-        initial={reduced ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7 }}
-        className="relative rounded-2xl border border-border bg-foreground p-4 shadow-xl"
-      >
-        {/* Traffic lights */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400" aria-hidden />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" aria-hidden />
-          <span className="h-2.5 w-2.5 rounded-full bg-green-400" aria-hidden />
-          <span className="ml-2 font-mono text-[0.65rem] text-white/40">protech ~ learning-env</span>
-        </div>
-        {/* Terminal lines */}
-        <div className="space-y-1 font-mono text-[0.72rem] leading-6">
-          {[
-            { prompt: "$", cmd: "npx enroll --course=web-dev", color: "text-white/90" },
-            { prompt: "→", cmd: "Installing skills...",         color: "text-teal" },
-            { prompt: "→", cmd: "Loaded: HTML CSS JS PHP MySQL", color: "text-teal" },
-            { prompt: "✓", cmd: "Ready to build!",              color: "text-green-400" },
-          ].map((line, i) => (
-            <motion.div
-              key={i}
-              initial={reduced ? false : { opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 + i * 0.15, duration: 0.45 }}
-              className="flex gap-2"
-            >
-              <span className="text-teal/70">{line.prompt}</span>
-              <span className={line.color}>{line.cmd}</span>
-            </motion.div>
-          ))}
-          <motion.div
-            animate={reduced ? {} : { opacity: [1, 0, 1] }}
-            transition={{ repeat: Infinity, duration: 1.1, delay: 1.5 }}
-            className="h-4 w-1.5 rounded-sm bg-teal inline-block translate-y-0.5"
-          />
-        </div>
-      </motion.div>
-
       {/* Track cards grid */}
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {tracks.map(({ icon: Icon, label, color, bg, skills }, i) => (
           <motion.div
             key={label}
@@ -299,7 +258,7 @@ function Positioning() {
     },
   ];
   return (
-    <section className="shell py-24 sm:py-32">
+    <section className="shell py-12 sm:py-16">
       <SectionHead
         index="01"
         eyebrow="The institute"
@@ -338,7 +297,7 @@ function CourseExplorer() {
 
   return (
     <section className="border-y border-border bg-surface">
-      <div className="shell py-24 sm:py-32">
+      <div className="shell py-12 sm:py-16">
         <SectionHead
           index="02"
           eyebrow="Curriculum"
@@ -442,7 +401,7 @@ function CourseExplorer() {
 
 function Highlights() {
   return (
-    <section className="shell py-24 sm:py-32">
+    <section className="shell py-12 sm:py-16">
       <SectionHead
         index="03"
         eyebrow="Courses Highlights"
@@ -480,7 +439,7 @@ function AISection() {
         }}
         aria-hidden
       />
-      <div className="shell relative py-24 sm:py-32">
+      <div className="shell relative py-12 sm:py-16">
         <Reveal>
           <span className="eyebrow !text-primary-foreground/60">04 — The future is here</span>
           <h2 className="mt-6 max-w-3xl font-display text-3xl leading-[1.06] tracking-tight sm:text-5xl">
@@ -527,7 +486,7 @@ function GalleryStrip() {
   const { data: images = [] } = usePublicGallery();
   if (images.length === 0) return null;
   return (
-    <section className="shell py-24 sm:py-32">
+    <section className="shell py-12 sm:py-16">
       <SectionHead index="05" eyebrow="Gallery" title="Inside the institute." />
       <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {images.slice(0, 8).map((img, i) => (
@@ -557,7 +516,7 @@ function TestimonialsSection() {
 
   return (
     <section className="border-t border-border bg-surface">
-      <div className="shell py-24 sm:py-32">
+      <div className="shell py-12 sm:py-16">
         <SectionHead index="06" eyebrow="In their words" title="Student experiences." />
         <div className="mt-14">
           {isLoading ? (
@@ -625,9 +584,9 @@ function TestimonialsSection() {
 
 function ClosingCTA() {
   return (
-    <section className="shell py-24 sm:py-32">
+    <section className="shell py-12 sm:py-16">
       <Reveal>
-        <div className="grid gap-10 border-y border-border py-16 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+        <div className="grid gap-10 border-y border-border py-12 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <h2 className="max-w-2xl font-display text-3xl leading-[1.08] tracking-tight sm:text-5xl">
             Start where you are. Leave with something you built.
           </h2>

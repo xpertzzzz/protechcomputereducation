@@ -68,7 +68,7 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.5rem;
 
   --ink: oklch(0.2 0.035 262);
   --ink-soft: oklch(0.44 0.02 262);

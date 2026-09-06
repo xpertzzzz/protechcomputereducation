@@ -74,7 +74,7 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="relative overflow-hidden border border-dashed border-border bg-surface px-8 py-16 text-center">
+    <div className="relative overflow-hidden border border-dashed border-border bg-surface px-8 py-12 text-center">
       <div className="pointer-events-none absolute inset-0 grid-field opacity-40" aria-hidden />
       <div className="relative mx-auto max-w-md">
         <span className="eyebrow">Nothing here yet</span>
@@ -100,7 +100,7 @@ export function PageHero({
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="pointer-events-none absolute inset-0 grid-field opacity-50" aria-hidden />
-      <div className="shell relative py-20 sm:py-28">
+      <div className="shell relative py-16 sm:py-28">
         <Reveal>
           <span className="eyebrow">{eyebrow}</span>
           <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl">
@@ -120,7 +120,7 @@ export function PageHero({
 
 export function Prose({ children }: { children: ReactNode }) {
   return (
-    <div className="shell py-16 sm:py-20">
+    <div className="shell py-12 sm:py-16">
       <div className="max-w-3xl space-y-8 text-[0.95rem] leading-relaxed text-muted-foreground [&_h2]:mt-12 [&_h2]:font-display [&_h2]:text-xl [&_h2]:tracking-tight [&_h2]:text-foreground [&_li]:mb-2 [&_p]:mt-3 [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:pl-5">
         {children}
       </div>

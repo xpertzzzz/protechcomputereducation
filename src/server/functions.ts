@@ -5,6 +5,17 @@ import { eq, desc, asc } from "drizzle-orm";
 import { FALLBACK_SETTINGS, type SiteSettings } from "@/lib/brand";
 import { type Course, type GalleryItem, type Testimonial } from "@/lib/data";
 
+function safeParseArray(val: string | null | undefined, separator = ','): string[] {
+  if (!val) return [];
+  try {
+    const parsed = JSON.parse(val);
+    if (Array.isArray(parsed)) return parsed;
+  } catch (e) {
+    // Not JSON, split by separator
+  }
+  return val.split(separator).map(s => s.trim()).filter(Boolean);
+}
+
 function mapCourse(c: any): Course {
   return {
     id: String(c.id),
@@ -15,10 +26,10 @@ function mapCourse(c: any): Course {
     duration: c.duration,
     short_description: c.shortDescription,
     full_description: c.description,
-    syllabus: c.syllabus ? JSON.parse(c.syllabus) : [],
-    technologies: c.technologies ? JSON.parse(c.technologies) : [],
-    projects: c.projects ? JSON.parse(c.projects) : [],
-    prerequisites: c.prerequisites ? JSON.parse(c.prerequisites) : [],
+    syllabus: safeParseArray(c.syllabus, '\n'),
+    technologies: safeParseArray(c.technologies, ','),
+    projects: safeParseArray(c.projects, ','),
+    prerequisites: safeParseArray(c.prerequisites, ','),
     audience: null,
     image_url: c.image,
     featured: c.featured,
