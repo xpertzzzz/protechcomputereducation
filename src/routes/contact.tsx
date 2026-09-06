@@ -8,9 +8,14 @@ import { FALLBACK_SETTINGS, telHref, whatsappLink } from "@/lib/brand";
 import { useSettings } from "@/lib/data";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>): { course?: string } => {
+    return {
+      course: typeof search.course === "string" ? search.course : undefined,
+    };
+  },
   head: () => ({
     meta: [
-      { title: "Contact & Admissions — Protech Computer Education" },
+      { title: "Contact & Admissions - Protech Computer Education" },
       {
         name: "description",
         content:
@@ -29,6 +34,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const { data: settings } = useSettings();
+  const search = Route.useSearch();
   const s = settings ?? FALLBACK_SETTINGS;
   const phones = [s.phone_primary, s.phone_secondary].filter(Boolean) as string[];
 
@@ -36,14 +42,14 @@ function ContactPage() {
     <SiteShell>
       <PageHero
         eyebrow="Contact"
-        title="Talk to the institute directly."
-        lead="Send an enquiry and it is saved with us before WhatsApp opens — so nothing is lost, even if the chat is closed."
+        title="Talk to the institute."
+        lead="Send an enquiry and it is saved with us before WhatsApp opens."
       />
 
-      <section className="shell grid gap-16 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
-        <div className="space-y-10">
+      <section className="shell grid gap-12 py-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="space-y-8">
           <Reveal>
-            <div className="border-t border-border pt-8">
+            <div className="border-t border-border pt-6">
               <span className="eyebrow flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" /> Address
               </span>
@@ -115,15 +121,14 @@ function ContactPage() {
           </Reveal>
         </div>
 
-        <div className="border border-border bg-card p-7 sm:p-10">
-          <span className="eyebrow">Admission enquiry</span>
-          <h2 className="mt-4 font-display text-3xl tracking-tight">Send Your Details</h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Fill this in and we'll save your enquiry, then open WhatsApp with your message ready to
-            send.
+        <div className="border border-border bg-card p-6 sm:p-8 rounded-xl shadow-sm">
+          <span className="eyebrow text-cobalt">Admission enquiry</span>
+          <h2 className="mt-3 font-display text-2xl font-bold tracking-tight">Send Your Details</h2>
+          <p className="mt-2 text-sm text-muted-foreground mb-6">
+            Fill this in and we'll save your enquiry, then open WhatsApp with your message ready to send.
           </p>
-          <div className="mt-9">
-            <EnquiryForm />
+          <div className="mt-6">
+            <EnquiryForm initialCourse={search.course} />
           </div>
         </div>
       </section>

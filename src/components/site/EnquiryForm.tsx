@@ -21,9 +21,11 @@ type FieldErrors = Partial<Record<keyof z.infer<typeof schema>, string>>;
 
 export function EnquiryForm({
   presetCourse,
+  initialCourse,
   compact = false,
 }: {
   presetCourse?: Course | null;
+  initialCourse?: string;
   compact?: boolean;
 }) {
   const { settings } = useSettings();
@@ -132,7 +134,12 @@ export function EnquiryForm({
                 {presetCourse.name}
               </div>
             ) : (
-              <select id="course" name="course" className={fieldClass} defaultValue="">
+              <select 
+                id="course" 
+                name="course" 
+                className={fieldClass} 
+                defaultValue={courses.find(c => c.slug === initialCourse)?.id ?? ""}
+              >
                 <option value="">Select a course</option>
                 {courses.map((c) => (
                   <option key={c.id} value={c.id}>

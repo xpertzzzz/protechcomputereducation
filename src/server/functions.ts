@@ -4,6 +4,7 @@ import { settings, courses, galleryItems, testimonials, enquiries } from "@/db/s
 import { eq, desc, asc } from "drizzle-orm";
 import { FALLBACK_SETTINGS, type SiteSettings } from "@/lib/brand";
 import { type Course, type GalleryItem, type Testimonial } from "@/lib/data";
+import { verifyCredentials, createAdminSession, clearAdminSession, verifyAdminSession } from "@/server/auth";
 
 function safeParseArray(val: string | null | undefined, separator = ','): string[] {
   if (!val) return [];
@@ -138,3 +139,29 @@ export const submitEnquiryFn = createServerFn({ method: "POST" })
     });
     return { success: true };
   });
+
+// Auth endpoints
+
+export const loginFn = createServerFn({ method: "POST" })
+  .validator((data: { username?: string; password?: string }) => data)
+  .handler(async ({ data }) => {
+    const isValid = verifyCredentials(data.username, data.password);
+    if (!isValid) {
+      throw new Error("Invalid username or password");
+    }
+    await createAdminSession();
+    return { success: true };
+  });
+
+export const logoutFn = createServerFn({ method: "POST" })
+  .handler(async () => {
+    clearAdminSession();
+    return { success: true };
+  });
+
+export const checkAuthFn = createServerFn({ method: "GET" })
+  .handler(async () => {
+    const isAuthenticated = await verifyAdminSession();
+    return { isAuthenticated };
+  });
+
